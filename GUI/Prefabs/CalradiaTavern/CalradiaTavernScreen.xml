@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" ?>
+<Prefab>
+  <Window>
+    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+      <Children>
+        <Widget WidthSizePolicy="StretchToParent"
+                HeightSizePolicy="StretchToParent"
+                Sprite="BlankWhiteSquare_9"
+                Color="#000000FF"
+                AlphaFactor="0.45" />
+
+        <Widget WidthSizePolicy="Fixed"
+                HeightSizePolicy="Fixed"
+                SuggestedWidth="980"
+                SuggestedHeight="640"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Sprite="BlankWhiteSquare_9"
+                Color="#131313FF"
+                AlphaFactor="0.95">
+          <Children>
+            <ListPanel WidthSizePolicy="StretchToParent"
+                       HeightSizePolicy="StretchToParent"
+                       MarginLeft="20"
+                       MarginRight="20"
+                       MarginTop="18"
+                       MarginBottom="18"
+                       StackLayout.LayoutMethod="VerticalTopToBottom">
+              <Children>
+                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48">
+                  <Children>
+                    <TextWidget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                Brush="Clan.Title.Text"
+                                Text="@TitleText" />
+                    <ButtonWidget WidthSizePolicy="Fixed"
+                                  HeightSizePolicy="Fixed"
+                                  SuggestedWidth="110"
+                                  SuggestedHeight="38"
+                                  Brush="Header.Tab.Center"
+                                  Command.Click="ExecuteClose">
+                      <Children>
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="StretchToParent"
+                                    Brush="Clan.TabControl.Text"
+                                    Text="@CloseButtonText" />
+                      </Children>
+                    </ButtonWidget>
+                  </Children>
+                </ListPanel>
+
+                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="54" MarginTop="8">
+                  <Children>
+                    <TextWidget WidthSizePolicy="Fixed"
+                                HeightSizePolicy="StretchToParent"
+                                SuggestedWidth="90"
+                                Brush="Clan.Text.Body"
+                                Text="Name" />
+                    <Widget WidthSizePolicy="Fixed"
+                            HeightSizePolicy="StretchToParent"
+                            SuggestedWidth="320"
+                            Sprite="General\CharacterCreation\name_input_area"
+                            MarginRight="8">
+                      <Children>
+                        <EditableTextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            MarginLeft="10"
+                                            MarginRight="10"
+                                            MarginTop="10"
+                                            MarginBottom="8"
+                                            Brush="Review.NameInput.Text"
+                                            RealText="@NameInputText" />
+                      </Children>
+                    </Widget>
+                    <ButtonWidget WidthSizePolicy="Fixed"
+                                  HeightSizePolicy="StretchToParent"
+                                  SuggestedWidth="130"
+                                  Brush="Header.Tab.Center"
+                                  Command.Click="ExecuteApplyName">
+                      <Children>
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="StretchToParent"
+                                    Brush="Clan.TabControl.Text"
+                                    Text="@ApplyNameButtonText" />
+                      </Children>
+                    </ButtonWidget>
+                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" />
+                  </Children>
+                </ListPanel>
+
+                <Widget WidthSizePolicy="StretchToParent"
+                        HeightSizePolicy="Fixed"
+                        SuggestedHeight="2"
+                        MarginTop="8"
+                        MarginBottom="8"
+                        Sprite="BlankWhiteSquare_9"
+                        Color="#7A5A2BFF" />
+
+                <Widget WidthSizePolicy="StretchToParent"
+                        HeightSizePolicy="StretchToParent"
+                        Sprite="BlankWhiteSquare_9"
+                        Color="#000000FF"
+                        AlphaFactor="0.35">
+                  <Children>
+                    <ScrollablePanel WidthSizePolicy="StretchToParent"
+                                     HeightSizePolicy="StretchToParent"
+                                     MarginLeft="8"
+                                     MarginRight="8"
+                                     MarginTop="8"
+                                     MarginBottom="8"
+                                     AutoHideScrollBars="true"
+                                     ClipRect="ChatClip"
+                                     InnerPanel="ChatClip/ChatList">
+                      <Children>
+                        <Widget Id="ChatClip"
+                                WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                ClipToBounds="true">
+                          <Children>
+                            <ListPanel Id="ChatList"
+                                       WidthSizePolicy="StretchToParent"
+                                       HeightSizePolicy="CoverChildren"
+                                       DataSource="{ChatLines}"
+                                       StackLayout.LayoutMethod="VerticalTopToBottom">
+                              <ItemTemplate>
+                                <Widget WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="CoverChildren"
+                                        MarginBottom="2">
+                                  <Children>
+                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="CoverChildren"
+                                                Brush="Clan.Text.Body"
+                                                Brush.TextHorizontalAlignment="Left"
+                                                Brush.FontColor="#73D68CFF"
+                                                IsVisible="@IsSelf"
+                                                Text="@LineText" />
+                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="CoverChildren"
+                                                Brush="Clan.Text.Body"
+                                                Brush.TextHorizontalAlignment="Left"
+                                                Brush.FontColor="#F4E1C4FF"
+                                                IsHidden="@IsSelf"
+                                                Text="@LineText" />
+                                  </Children>
+                                </Widget>
+                              </ItemTemplate>
+                            </ListPanel>
+                          </Children>
+                        </Widget>
+                      </Children>
+                    </ScrollablePanel>
+                  </Children>
+                </Widget>
+
+                <ListPanel WidthSizePolicy="StretchToParent"
+                           HeightSizePolicy="Fixed"
+                           SuggestedHeight="66"
+                           MarginTop="8">
+                  <Children>
+                    <Widget WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            Sprite="General\CharacterCreation\name_input_area"
+                            MarginRight="8">
+                      <Children>
+                        <EditableTextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            MarginLeft="12"
+                                            MarginRight="12"
+                                            MarginTop="12"
+                                            MarginBottom="10"
+                                            Brush="Review.NameInput.Text"
+                                            RealText="@ChatInputText"
+                                            KeyboardInfoText="Calradia Tavern Chat" />
+                      </Children>
+                    </Widget>
+                    <ButtonWidget WidthSizePolicy="Fixed"
+                                  HeightSizePolicy="StretchToParent"
+                                  SuggestedWidth="140"
+                                  Brush="Header.Tab.Center"
+                                  MarginRight="8"
+                                  Command.Click="ExecuteSendChat">
+                      <Children>
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="StretchToParent"
+                                    Brush="Clan.TabControl.Text"
+                                    Text="@SendChatButtonText" />
+                      </Children>
+                    </ButtonWidget>
+                    <ButtonWidget WidthSizePolicy="Fixed"
+                                  HeightSizePolicy="StretchToParent"
+                                  SuggestedWidth="140"
+                                  Brush="Header.Tab.Center"
+                                  Command.Click="ExecuteRefreshAll">
+                      <Children>
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="StretchToParent"
+                                    Brush="Clan.TabControl.Text"
+                                    Text="Refresh" />
+                      </Children>
+                    </ButtonWidget>
+                  </Children>
+                </ListPanel>
+
+                <TextWidget WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="Fixed"
+                            SuggestedHeight="34"
+                            MarginTop="6"
+                            Brush="Clan.Text.Body"
+                            Brush.FontColor="#D8C17CFF"
+                            Text="@StatusText" />
+              </Children>
+            </ListPanel>
+          </Children>
+        </Widget>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

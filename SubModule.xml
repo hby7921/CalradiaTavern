@@ -1,0 +1,34 @@
+<Module>
+  <Name value="Calradia Tavern" />
+  <Id value="CalradiaTavern" />
+  <Version value="v0.1.0" />
+  <DefaultModule value="false" />
+  <SingleplayerModule value="true" />
+  <MultiplayerModule value="false" />
+  <Official value="false" />
+  <DependedModules>
+    <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="Bannerlord.ButterLib" />
+    <DependedModule Id="Bannerlord.MBOptionScreen" />
+    <DependedModule Id="Bannerlord.UIExtenderEx" />
+    <DependedModule Id="Native" />
+    <DependedModule Id="SandBoxCore" />
+    <DependedModule Id="Sandbox" />
+    <DependedModule Id="StoryMode" />
+  </DependedModules>
+  <SubModules>
+    <SubModule>
+      <Name value="Calradia Tavern" />
+      <DLLName value="CalradiaTavern.dll" />
+      <SubModuleClassType value="CalradiaTavern.SubModule" />
+      <Tags>
+        <Tag key="Campaign" />
+        <Tag key="CampaignSystem" />
+        <Tag key="UI" />
+      </Tags>
+      <Assemblies>
+        <Assembly Path="bin/Win64_Shipping_Client/CalradiaTavern.dll" />
+      </Assemblies>
+    </SubModule>
+  </SubModules>
+</Module>

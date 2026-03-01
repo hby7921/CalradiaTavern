@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<Widget
+    WidthSizePolicy="CoverChildren"
+    HeightSizePolicy="CoverChildren"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Bottom"
+    MarginRight="2"
+    UpdateChildrenStates="true">
+    <Children>
+        <ButtonWidget
+            Id="CalradiaTavernButton"
+            DoNotPassEventsToChildren="true"
+            WidthSizePolicy="Fixed"
+            HeightSizePolicy="Fixed"
+            SuggestedWidth="52"
+            SuggestedHeight="52"
+            VerticalAlignment="Bottom"
+            Brush="MapBar.Left.Button"
+            Command.Click="ExecuteToggleCalradiaTavernPanel"
+            GamepadNavigationIndex="0">
+            <Children>
+                <TextWidget
+                    WidthSizePolicy="StretchToParent"
+                    HeightSizePolicy="StretchToParent"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Brush="MapTextBrushGal"
+                    Brush.FontSize="16"
+                    Text="@TavernButtonText" />
+            </Children>
+        </ButtonWidget>
+
+        <Widget
+            WidthSizePolicy="Fixed"
+            HeightSizePolicy="Fixed"
+            SuggestedWidth="22"
+            SuggestedHeight="22"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            PositionXOffset="4"
+            PositionYOffset="-4"
+            Sprite="BlankWhiteCircle"
+            Color="#B32626FF"
+            IsVisible="@HasTavernUnread">
+            <Children>
+                <TextWidget
+                    WidthSizePolicy="StretchToParent"
+                    HeightSizePolicy="StretchToParent"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Brush="MapTextBrushGal"
+                    Brush.FontSize="12"
+                    Text="@TavernUnreadText" />
+            </Children>
+        </Widget>
+    </Children>
+</Widget>

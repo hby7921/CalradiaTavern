@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" ?>
+<Widget
+    Id="CalradiaTavernOverlayRoot"
+    WidthSizePolicy="StretchToParent"
+    HeightSizePolicy="StretchToParent"
+    DoNotAcceptEvents="false"
+    DoNotPassEventsToChildren="false">
+    <Children>
+        <Widget
+            Id="CalradiaTavernChatPanel"
+            WidthSizePolicy="Fixed"
+            HeightSizePolicy="Fixed"
+            SuggestedWidth="520"
+            SuggestedHeight="250"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            MarginLeft="22"
+            MarginBottom="98"
+            Sprite="BlankWhiteSquare_9"
+            Color="#11161CFF"
+            AlphaFactor="0.9"
+            IsVisible="@IsTavernPanelOpen">
+            <Children>
+                <TextWidget
+                    WidthSizePolicy="CoverChildren"
+                    HeightSizePolicy="CoverChildren"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    MarginLeft="12"
+                    MarginTop="9"
+                    Brush="MapTextBrushGal"
+                    Brush.FontSize="16"
+                    Text="@TavernPanelTitle" />
+
+                <TextWidget
+                    WidthSizePolicy="StretchToParent"
+                    HeightSizePolicy="StretchToParent"
+                    MarginLeft="12"
+                    MarginRight="12"
+                    MarginTop="34"
+                    MarginBottom="92"
+                    Brush="ChatLog.Text"
+                    Brush.FontSize="15"
+                    Brush.TextHorizontalAlignment="Left"
+                    Brush.TextVerticalAlignment="Top"
+                    ClipContents="true"
+                    Text="@TavernFeedText" />
+
+                <Widget
+                    Id="CalradiaTavernInputParent"
+                    WidthSizePolicy="Fixed"
+                    HeightSizePolicy="Fixed"
+                    SuggestedWidth="300"
+                    SuggestedHeight="50"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    MarginLeft="12"
+                    MarginBottom="10"
+                    Sprite="General\CharacterCreation\name_input_area">
+                    <Children>
+                        <EditableTextWidget
+                            Id="CalradiaTavernInput"
+                            WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            MarginLeft="8"
+                            MarginRight="8"
+                            MarginTop="8"
+                            MarginBottom="8"
+                            Brush="Review.NameInput.Text"
+                            RealText="@TavernInputText"
+                            KeyboardInfoText="@TavernPanelTitle" />
+                    </Children>
+                </Widget>
+
+                <ButtonWidget
+                    WidthSizePolicy="Fixed"
+                    HeightSizePolicy="Fixed"
+                    SuggestedWidth="88"
+                    SuggestedHeight="32"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    MarginLeft="320"
+                    MarginBottom="19"
+                    Brush="MapBar.Left.Button"
+                    Command.Click="ExecuteTavernSendFromInput">
+                    <Children>
+                        <TextWidget
+                            WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            Brush="MapTextBrushGal"
+                            Brush.TextHorizontalAlignment="Center"
+                            Brush.TextVerticalAlignment="Center"
+                            Text="@TavernSendText" />
+                    </Children>
+                </ButtonWidget>
+
+                <ButtonWidget
+                    WidthSizePolicy="Fixed"
+                    HeightSizePolicy="Fixed"
+                    SuggestedWidth="88"
+                    SuggestedHeight="32"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    MarginLeft="412"
+                    MarginBottom="19"
+                    Brush="MapBar.Left.Button"
+                    Command.Click="ExecuteTavernRefresh">
+                    <Children>
+                        <TextWidget
+                            WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            Brush="MapTextBrushGal"
+                            Brush.TextHorizontalAlignment="Center"
+                            Brush.TextVerticalAlignment="Center"
+                            Text="@TavernRefreshText" />
+                    </Children>
+                </ButtonWidget>
+
+                <ButtonWidget
+                    WidthSizePolicy="Fixed"
+                    HeightSizePolicy="Fixed"
+                    SuggestedWidth="88"
+                    SuggestedHeight="26"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    MarginRight="10"
+                    MarginTop="8"
+                    Brush="MapBar.Left.Button"
+                    Command.Click="ExecuteTavernClose">
+                    <Children>
+                        <TextWidget
+                            WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            Brush="MapTextBrushGal"
+                            Brush.TextHorizontalAlignment="Center"
+                            Brush.TextVerticalAlignment="Center"
+                            Text="@TavernCloseText" />
+                    </Children>
+                </ButtonWidget>
+
+                <TextWidget
+                    WidthSizePolicy="StretchToParent"
+                    HeightSizePolicy="CoverChildren"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    MarginLeft="12"
+                    MarginRight="12"
+                    MarginBottom="2"
+                    Brush="ChatLog.Text"
+                    Brush.TextHorizontalAlignment="Left"
+                    Text="@TavernStatusText"
+                    AutoHideIfEmpty="true" />
+            </Children>
+        </Widget>
+    </Children>
+</Widget>
