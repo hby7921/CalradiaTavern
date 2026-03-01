@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CalradiaTavern.Behaviors;
 using TaleWorlds.Library;
@@ -19,19 +19,26 @@ namespace CalradiaTavern.UI.ViewModels
         {
             _onClose = onClose;
             ChatLines = new MBBindingList<TavernChatLineVM>();
+            OnlinePlayers = new MBBindingList<TavernOnlinePlayerVM>();
         }
 
         [DataSourceProperty]
-        public string TitleText => "Calradia Tavern";
+        public string TitleText => "\u5361\u62c9\u8fea\u4e9a\u9152\u9986";
 
         [DataSourceProperty]
-        public string SendChatButtonText => "Send";
+        public string OnlinePlayersTitleText => "\u5728\u7ebf\u73a9\u5bb6";
 
         [DataSourceProperty]
-        public string ApplyNameButtonText => "Set Name";
+        public string ChatAreaTitleText => "\u9152\u9986\u60c5\u62a5\u4ea4\u6d41";
 
         [DataSourceProperty]
-        public string CloseButtonText => "Close";
+        public string SendChatButtonText => "\u53d1\u9001";
+
+        [DataSourceProperty]
+        public string ApplyNameButtonText => "\u66f4\u65b0\u540d\u5b57";
+
+        [DataSourceProperty]
+        public string CloseButtonText => "\u5173\u95ed";
 
         [DataSourceProperty]
         public string ChatInputText
@@ -81,6 +88,9 @@ namespace CalradiaTavern.UI.ViewModels
         [DataSourceProperty]
         public MBBindingList<TavernChatLineVM> ChatLines { get; }
 
+        [DataSourceProperty]
+        public MBBindingList<TavernOnlinePlayerVM> OnlinePlayers { get; }
+
         public void OnActivated()
         {
             _behavior = CalradiaTavernCampaignBehavior.Instance;
@@ -94,6 +104,7 @@ namespace CalradiaTavern.UI.ViewModels
             _behavior.MarkChatRead();
             StatusText = _behavior.PullNow();
             RefreshChatLines();
+            RefreshOnlinePlayers();
         }
 
         public void OnDeactivated()
@@ -117,6 +128,7 @@ namespace CalradiaTavern.UI.ViewModels
 
             _refreshElapsed = 0f;
             RefreshChatLines();
+            RefreshOnlinePlayers();
         }
 
         public void ExecuteSendChat()
@@ -142,6 +154,7 @@ namespace CalradiaTavern.UI.ViewModels
             }
 
             RefreshChatLines();
+            RefreshOnlinePlayers();
         }
 
         public void ExecuteApplyName()
@@ -153,6 +166,7 @@ namespace CalradiaTavern.UI.ViewModels
             }
 
             StatusText = _behavior.SetDisplayName(NameInputText);
+            RefreshOnlinePlayers();
         }
 
         public void ExecuteRefreshAll()
@@ -165,6 +179,7 @@ namespace CalradiaTavern.UI.ViewModels
 
             StatusText = _behavior.PullNow();
             RefreshChatLines();
+            RefreshOnlinePlayers();
         }
 
         public void ExecuteClose()
@@ -188,7 +203,34 @@ namespace CalradiaTavern.UI.ViewModels
                     ? (line.IsSelf ? (_behavior.DisplayName ?? "Me") : "Anonymous")
                     : line.PlayerName.Trim();
 
-                ChatLines.Add(new TavernChatLineVM(sender + ": " + (line.Text ?? string.Empty), line.IsSelf));
+                long unixTimeMs = line.UnixTimeMs <= 0
+                    ? DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                    : line.UnixTimeMs;
+                string localTime = DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs)
+                    .ToLocalTime()
+                    .ToString("HH:mm");
+
+                ChatLines.Add(
+                    new TavernChatLineVM(
+                        "[" + localTime + "] " + sender + ": " + (line.Text ?? string.Empty),
+                        line.IsSelf
+                    )
+                );
+            }
+        }
+
+        private void RefreshOnlinePlayers()
+        {
+            if (_behavior == null)
+            {
+                return;
+            }
+
+            IReadOnlyList<string> players = _behavior.GetKnownPlayers(80);
+            OnlinePlayers.Clear();
+            for (int i = 0; i < players.Count; i++)
+            {
+                OnlinePlayers.Add(new TavernOnlinePlayerVM(players[i]));
             }
         }
     }

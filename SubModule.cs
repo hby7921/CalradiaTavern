@@ -5,21 +5,26 @@ using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.ScreenSystem;
 
 namespace CalradiaTavern
 {
     public class SubModule : MBSubModuleBase
     {
-        private const string BuildMarker = "CTavern build 2026-03-01 17:15 F8-text-input";
+        private const string BuildMarker = "CTavern build 2026-03-01 22:35 ui-stable-shell";
         private const float BackgroundPollIntervalSeconds = 1.5f;
-        private bool _chatInputOpen;
+
         private float _backgroundPollElapsed;
+        private bool _chatInputOpen;
 
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
             CalradiaTavernDebug.Initialize();
-            CalradiaTavernDebug.Trace("SubModule", "OnSubModuleLoad " + BuildMarker + " " + CalradiaTavernDebug.BuildTag);
+            CalradiaTavernDebug.Trace(
+                "SubModule",
+                "OnSubModuleLoad " + BuildMarker + " " + CalradiaTavernDebug.BuildTag
+            );
         }
 
         protected override void OnSubModuleUnloaded()
@@ -53,6 +58,11 @@ namespace CalradiaTavern
                 return;
             }
 
+            if (!IsMapScreenActive())
+            {
+                return;
+            }
+
             _backgroundPollElapsed += Math.Max(0f, dt);
             if (_backgroundPollElapsed >= BackgroundPollIntervalSeconds)
             {
@@ -67,10 +77,19 @@ namespace CalradiaTavern
                 }
             }
 
-            if (Input.IsKeyReleased(InputKey.F8))
+            if (!Input.IsKeyReleased(InputKey.F8))
+            {
+                return;
+            }
+
+            try
             {
                 CalradiaTavernDebug.Trace("SubModule", "F8 pressed");
                 OpenQuickChatInput();
+            }
+            catch (Exception ex)
+            {
+                CalradiaTavernDebug.ReportException("SubModule.OnApplicationTick.F8Open", ex);
             }
         }
 
@@ -85,7 +104,7 @@ namespace CalradiaTavern
             if (behavior == null)
             {
                 InformationManager.DisplayMessage(
-                    new InformationMessage("[Calradia Tavern] Campaign behavior not ready.")
+                    new InformationMessage("[Calradia Tavern] Campaign behavior not ready.", Colors.Red)
                 );
                 return;
             }
@@ -96,8 +115,8 @@ namespace CalradiaTavern
             {
                 InformationManager.ShowTextInquiry(
                     new TextInquiryData(
-                        "Calradia Tavern",
-                        "Type your global chat message",
+                        "Global Chat",
+                        "Type your message. Sent messages and incoming messages appear in the bottom-left feed.",
                         true,
                         true,
                         "Send",
@@ -106,21 +125,45 @@ namespace CalradiaTavern
                         {
                             try
                             {
-                                string result = behavior.SendChat(input);
-                                bool failed = result.StartsWith("Send failed:", StringComparison.OrdinalIgnoreCase);
+                                string text = (input ?? string.Empty).Trim();
+                                if (text.Length == 0)
+                                {
+                                    InformationManager.DisplayMessage(
+                                        new InformationMessage("[Global Chat] Message cannot be empty.", Colors.Red)
+                                    );
+                                    return;
+                                }
+
+                                string result = behavior.SendChat(text);
+                                if (result.StartsWith("Send failed:", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    InformationManager.DisplayMessage(
+                                        new InformationMessage("[Global Chat] " + result, Colors.Red)
+                                    );
+                                    return;
+                                }
+
+                                string sender = string.IsNullOrWhiteSpace(behavior.DisplayName)
+                                    ? "Me"
+                                    : behavior.DisplayName;
                                 InformationManager.DisplayMessage(
                                     new InformationMessage(
-                                        "[Calradia Tavern] " + result,
-                                        failed ? Colors.Red : Colors.Green
+                                        CalradiaTavernCampaignBehavior.FormatChatToast(
+                                            sender,
+                                            text,
+                                            DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                                        ),
+                                        Colors.Cyan
                                     )
                                 );
+
                                 behavior.PullNow();
                             }
                             catch (Exception ex)
                             {
-                                CalradiaTavernDebug.ReportException("SubModule.OpenQuickChatInput.Send", ex);
+                                CalradiaTavernDebug.ReportException("SubModule.QuickChat.Send", ex);
                                 InformationManager.DisplayMessage(
-                                    new InformationMessage("[Calradia Tavern] Send exception: " + ex.Message, Colors.Red)
+                                    new InformationMessage("[Global Chat] Send exception: " + ex.Message, Colors.Red)
                                 );
                             }
                             finally
@@ -141,11 +184,20 @@ namespace CalradiaTavern
             catch (Exception ex)
             {
                 _chatInputOpen = false;
-                CalradiaTavernDebug.ReportException("SubModule.OpenQuickChatInput.ShowTextInquiry", ex);
-                InformationManager.DisplayMessage(
-                    new InformationMessage("[Calradia Tavern] Open input failed: " + ex.Message, Colors.Red)
-                );
+                CalradiaTavernDebug.ReportException("SubModule.QuickChat.Open", ex);
             }
+        }
+
+        private static bool IsMapScreenActive()
+        {
+            ScreenBase top = ScreenManager.TopScreen;
+            if (top == null)
+            {
+                return false;
+            }
+
+            string name = top.GetType().Name ?? string.Empty;
+            return name.IndexOf("MapScreen", StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

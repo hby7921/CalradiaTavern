@@ -1,9 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CalradiaTavern.Models;
 using CalradiaTavern.Networking;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.GameMenus;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.Core;
@@ -50,6 +52,7 @@ namespace CalradiaTavern.Behaviors
         private float _pollElapsed;
         private float _registerElapsed;
         private TavernApiClient _api;
+        private bool _sessionCursorInitialized;
 
         public static event Action StateChanged;
 
@@ -63,6 +66,7 @@ namespace CalradiaTavern.Behaviors
         public override void RegisterEvents()
         {
             CampaignEvents.TickEvent.AddNonSerializedListener(this, OnTick);
+            CampaignEvents.OnSessionLaunchedEvent.AddNonSerializedListener(this, OnSessionLaunched);
         }
 
         public override void SyncData(IDataStore dataStore)
@@ -102,6 +106,33 @@ namespace CalradiaTavern.Behaviors
             int take = Math.Max(1, Math.Min(300, maxCount));
             int skip = Math.Max(0, _chatLines.Count - take);
             return _chatLines.Skip(skip).ToList();
+        }
+        public IReadOnlyList<string> GetKnownPlayers(int maxCount = 80)
+        {
+            EnsureReady();
+            int take = Math.Max(1, Math.Min(200, maxCount));
+            List<string> names = new List<string>();
+            HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            string self = string.IsNullOrWhiteSpace(_displayName) ? "Me" : _displayName.Trim();
+            if (seen.Add(self))
+            {
+                names.Add(self);
+            }
+            for (int i = _chatLines.Count - 1; i >= 0 && names.Count < take; i--)
+            {
+                string candidate = _chatLines[i]?.PlayerName;
+                if (string.IsNullOrWhiteSpace(candidate))
+                {
+                    continue;
+                }
+                string name = candidate.Trim();
+                if (!seen.Add(name))
+                {
+                    continue;
+                }
+                names.Add(name);
+            }
+            return names;
         }
 
         public void MarkChatRead()
@@ -174,6 +205,24 @@ namespace CalradiaTavern.Behaviors
             }
 
             return selfName + " sent: " + preview;
+        }
+
+        public static string FormatChatToast(string playerName, string text, long unixTimeMs)
+        {
+            string sender = string.IsNullOrWhiteSpace(playerName) ? "Anonymous" : playerName.Trim();
+            string body = string.IsNullOrWhiteSpace(text) ? string.Empty : text.Trim();
+            DateTimeOffset local = unixTimeMs > 0
+                ? DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs).ToLocalTime()
+                : DateTimeOffset.Now;
+            string offset = FormatUtcOffset(local.Offset);
+            return "["
+                + offset
+                + " | "
+                + local.ToString("HH:mm", CultureInfo.InvariantCulture)
+                + "] "
+                + sender
+                + ": "
+                + body;
         }
 
         public List<TavernInventoryEntry> GetInventoryEntries()
@@ -432,10 +481,7 @@ namespace CalradiaTavern.Behaviors
                     _unreadChatCount++;
                     InformationManager.DisplayMessage(
                         new InformationMessage(
-                            "[Tavern Chat] "
-                                + senderName
-                                + ": "
-                                + (msg.Text ?? string.Empty),
+                            FormatChatToast(senderName, msg.Text ?? string.Empty, msg.UnixTimeMs),
                             Colors.Cyan
                         )
                     );
@@ -636,6 +682,7 @@ namespace CalradiaTavern.Behaviors
             _seenDeliveryIds ??= new List<string>();
             _chatLines ??= new List<TavernChatLine>();
             EnsureApi();
+            EnsureSessionCursorInitialized();
         }
 
         private void ApplyConfiguredServerUrl()
@@ -800,5 +847,85 @@ namespace CalradiaTavern.Behaviors
 
             return Game.Current?.ObjectManager?.GetObject<ItemObject>(itemId.Trim());
         }
+
+        private static string FormatUtcOffset(TimeSpan offset)
+        {
+            int totalMinutes = (int)offset.TotalMinutes;
+            string sign = totalMinutes >= 0 ? "+" : "-";
+            int absMinutes = Math.Abs(totalMinutes);
+            int hours = absMinutes / 60;
+            int minutes = absMinutes % 60;
+
+            if (minutes == 0)
+            {
+                return "UTC" + sign + hours.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return "UTC"
+                + sign
+                + hours.ToString(CultureInfo.InvariantCulture)
+                + ":"
+                + minutes.ToString("00", CultureInfo.InvariantCulture);
+        }
+
+        private void OnSessionLaunched(CampaignGameStarter starter)
+        {
+            try
+            {
+                starter.AddGameMenuOption(
+                    "town_backstreet",
+                    "ctavern_open_intel_backstreet",
+                    "\u4ea4\u6d41\u5361\u62c9\u8fea\u4e9a\u60c5\u62a5",
+                    GameMenuOpenCondition,
+                    GameMenuOpenConsequence,
+                    false,
+                    2,
+                    false
+                );
+                CalradiaTavernDebug.Trace("Behavior", "Menu option registered: town_backstreet");
+            }
+            catch (Exception ex)
+            {
+                CalradiaTavernDebug.ReportException("Behavior.OnSessionLaunched.AddGameMenuOption", ex);
+            }
+        }
+
+        private static bool GameMenuOpenCondition(MenuCallbackArgs args)
+        {
+            if (args != null)
+            {
+                args.optionLeaveType = GameMenuOption.LeaveType.Submenu;
+                args.IsEnabled = true;
+            }
+            return true;
+        }
+
+        private static void GameMenuOpenConsequence(MenuCallbackArgs args)
+        {
+            try
+            {
+                CalradiaTavern.UI.CalradiaTavernScreenManager.Open();
+            }
+            catch (Exception ex)
+            {
+                CalradiaTavernDebug.ReportException("Behavior.GameMenuOpenConsequence", ex);
+            }
+        }
+
+        private void EnsureSessionCursorInitialized()
+        {
+            if (_sessionCursorInitialized)
+            {
+                return;
+            }
+
+            long nowMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            _lastChatUnixMs = nowMs;
+            _seenChatIds?.Clear();
+            _chatLines?.Clear();
+            _sessionCursorInitialized = true;
+            CalradiaTavernDebug.Trace("Behavior", "Session chat cursor initialized at " + nowMs);
+        }
     }
 }
+

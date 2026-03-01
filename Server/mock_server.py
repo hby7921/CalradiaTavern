@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import json
+import os
+import sqlite3
 import threading
 import time
 import uuid
@@ -11,6 +13,7 @@ from urllib.parse import parse_qs, urlparse
 LOCK = threading.Lock()
 TIME_LOCK = threading.Lock()
 LAST_NOW_MS = 0
+DB_LOCK = threading.Lock()
 
 PLAYERS_BY_ID = {}
 PLAYER_NAME_INDEX = {}
@@ -20,6 +23,151 @@ DELIVERIES = []
 
 # Legacy offer-based trades are still supported.
 TRADE_OFFERS = {}
+MAX_PULL_LIMIT = 500
+
+
+def resolve_db_path():
+    configured = (os.environ.get("CTAVERN_DB_PATH") or "").strip()
+    if configured:
+        return configured
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "calradia_tavern.db")
+
+
+DB_PATH = resolve_db_path()
+
+
+def db_connect():
+    return sqlite3.connect(DB_PATH, timeout=10.0)
+
+
+def init_db():
+    with DB_LOCK:
+        with db_connect() as conn:
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS players (
+                    player_id TEXT PRIMARY KEY,
+                    player_name TEXT NOT NULL,
+                    channel_id TEXT NOT NULL,
+                    last_seen_unix_ms INTEGER NOT NULL
+                )
+                """
+            )
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS chat_messages (
+                    message_id TEXT PRIMARY KEY,
+                    channel_id TEXT NOT NULL,
+                    player_id TEXT NOT NULL,
+                    player_name TEXT NOT NULL,
+                    text TEXT NOT NULL,
+                    unix_time_ms INTEGER NOT NULL
+                )
+                """
+            )
+            conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_chat_channel_time ON chat_messages(channel_id, unix_time_ms)"
+            )
+            conn.commit()
+
+
+def load_players_from_db():
+    with DB_LOCK:
+        with db_connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT player_id, player_name, channel_id, last_seen_unix_ms
+                FROM players
+                """
+            ).fetchall()
+
+    with LOCK:
+        PLAYERS_BY_ID.clear()
+        PLAYER_NAME_INDEX.clear()
+        for row in rows:
+            player_id = row[0]
+            player_name = row[1]
+            channel_id = row[2]
+            last_seen = int(row[3] or 0)
+            info = {
+                "PlayerId": player_id,
+                "PlayerName": player_name,
+                "ChannelId": channel_id,
+                "LastSeenUnixTimeMs": last_seen,
+            }
+            PLAYERS_BY_ID[player_id] = info
+            PLAYER_NAME_INDEX[norm_name(player_name)] = player_id
+
+
+def db_upsert_player(info):
+    with DB_LOCK:
+        with db_connect() as conn:
+            conn.execute(
+                """
+                INSERT INTO players(player_id, player_name, channel_id, last_seen_unix_ms)
+                VALUES(?, ?, ?, ?)
+                ON CONFLICT(player_id) DO UPDATE SET
+                    player_name=excluded.player_name,
+                    channel_id=excluded.channel_id,
+                    last_seen_unix_ms=excluded.last_seen_unix_ms
+                """,
+                (
+                    info["PlayerId"],
+                    info["PlayerName"],
+                    info["ChannelId"],
+                    int(info["LastSeenUnixTimeMs"]),
+                ),
+            )
+            conn.commit()
+
+
+def db_insert_chat(msg):
+    with DB_LOCK:
+        with db_connect() as conn:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO chat_messages
+                (message_id, channel_id, player_id, player_name, text, unix_time_ms)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    msg["MessageId"],
+                    msg["ChannelId"],
+                    msg["PlayerId"],
+                    msg["PlayerName"],
+                    msg["Text"],
+                    int(msg["UnixTimeMs"]),
+                ),
+            )
+            conn.commit()
+
+
+def db_pull_chat(channel_id, after_ms, limit):
+    safe_limit = max(1, min(MAX_PULL_LIMIT, int(limit)))
+    with DB_LOCK:
+        with db_connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT message_id, channel_id, player_id, player_name, text, unix_time_ms
+                FROM chat_messages
+                WHERE channel_id = ? AND unix_time_ms > ?
+                ORDER BY unix_time_ms ASC
+                LIMIT ?
+                """,
+                (channel_id, int(after_ms), safe_limit),
+            ).fetchall()
+
+    return [
+        {
+            "MessageId": row[0],
+            "ChannelId": row[1],
+            "PlayerId": row[2],
+            "PlayerName": row[3],
+            "Text": row[4],
+            "UnixTimeMs": int(row[5]),
+        }
+        for row in rows
+    ]
 
 
 def now_ms():
@@ -56,6 +204,7 @@ def upsert_player(player_id: str, player_name: str, channel_id: str):
     }
     PLAYERS_BY_ID[player_id] = info
     PLAYER_NAME_INDEX[norm_name(info["PlayerName"])] = player_id
+    db_upsert_player(info)
     return info
 
 
@@ -89,12 +238,8 @@ class TavernHandler(BaseHTTPRequestHandler):
         if path == "/api/v1/chat/pull":
             channel_id = (query.get("channelId", ["global"])[0] or "global").strip()
             after_ms = int((query.get("afterUnixMs", ["0"])[0] or "0").strip() or "0")
-            with LOCK:
-                data = [
-                    x
-                    for x in CHAT_MESSAGES
-                    if x["ChannelId"] == channel_id and int(x["UnixTimeMs"]) > after_ms
-                ]
+            limit = int((query.get("limit", [str(MAX_PULL_LIMIT)])[0] or str(MAX_PULL_LIMIT)).strip() or str(MAX_PULL_LIMIT))
+            data = db_pull_chat(channel_id, after_ms, limit)
             self._send_json(envelope(True, data=data))
             return
 
@@ -171,6 +316,7 @@ class TavernHandler(BaseHTTPRequestHandler):
                 CHAT_MESSAGES.append(msg)
                 if len(CHAT_MESSAGES) > 3000:
                     del CHAT_MESSAGES[0 : len(CHAT_MESSAGES) - 3000]
+            db_insert_chat(msg)
             self._send_json(
                 envelope(True, data={"MessageId": msg["MessageId"], "UnixTimeMs": msg["UnixTimeMs"]})
             )
@@ -318,8 +464,10 @@ class TavernHandler(BaseHTTPRequestHandler):
 def main():
     host = "0.0.0.0"
     port = 18080
+    init_db()
+    load_players_from_db()
     server = ThreadingHTTPServer((host, port), TavernHandler)
-    print(f"Calradia Tavern mock server started at http://{host}:{port}")
+    print(f"Calradia Tavern mock server started at http://{host}:{port} db={DB_PATH}")
     server.serve_forever()
 
 

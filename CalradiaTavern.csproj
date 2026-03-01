@@ -110,6 +110,7 @@
     <Delete Files="$(ModuleInstallDir)\GUI\Prefabs\SPChatLog.xml" />
     <Delete Files="$(ModuleInstallDir)\GUI\PrefabExtensions\Native\SPChatLog_TavernToggle.xml" />
     <Delete Files="$(ModuleInstallDir)\GUI\PrefabExtensions\Native\SPChatLog_TavernButton.xml" />
+    <Delete Files="$(ModuleInstallDir)\GUI\PrefabExtensions\Map\MapBar_TavernButton.xml" />
 
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModuleInstallDir)\bin\Win64_Shipping_Client" SkipUnchangedFiles="true" />
     <Copy SourceFiles="$(TargetDir)SubModule.xml" DestinationFolder="$(ModuleInstallDir)" SkipUnchangedFiles="true" />

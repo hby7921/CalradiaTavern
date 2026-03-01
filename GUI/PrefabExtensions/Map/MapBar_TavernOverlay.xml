@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" ?>
+<?xml version="1.0" ?>
 <Widget
     Id="CalradiaTavernOverlayRoot"
     WidthSizePolicy="StretchToParent"
@@ -10,35 +10,34 @@
             Id="CalradiaTavernChatPanel"
             WidthSizePolicy="Fixed"
             HeightSizePolicy="Fixed"
-            SuggestedWidth="520"
-            SuggestedHeight="250"
+            SuggestedWidth="560"
+            SuggestedHeight="280"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            MarginLeft="22"
-            MarginBottom="98"
+            MarginLeft="18"
+            MarginBottom="84"
             Sprite="BlankWhiteSquare_9"
-            Color="#11161CFF"
-            AlphaFactor="0.9"
-            IsVisible="@IsTavernPanelOpen">
+            Color="#000000FF"
+            AlphaFactor="0.78">
             <Children>
                 <TextWidget
                     WidthSizePolicy="CoverChildren"
                     HeightSizePolicy="CoverChildren"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    MarginLeft="12"
-                    MarginTop="9"
+                    MarginLeft="10"
+                    MarginTop="8"
                     Brush="MapTextBrushGal"
-                    Brush.FontSize="16"
+                    Brush.FontSize="17"
                     Text="@TavernPanelTitle" />
 
                 <TextWidget
                     WidthSizePolicy="StretchToParent"
                     HeightSizePolicy="StretchToParent"
-                    MarginLeft="12"
-                    MarginRight="12"
-                    MarginTop="34"
-                    MarginBottom="92"
+                    MarginLeft="10"
+                    MarginRight="10"
+                    MarginTop="36"
+                    MarginBottom="78"
                     Brush="ChatLog.Text"
                     Brush.FontSize="15"
                     Brush.TextHorizontalAlignment="Left"
@@ -50,11 +49,11 @@
                     Id="CalradiaTavernInputParent"
                     WidthSizePolicy="Fixed"
                     HeightSizePolicy="Fixed"
-                    SuggestedWidth="300"
-                    SuggestedHeight="50"
+                    SuggestedWidth="450"
+                    SuggestedHeight="42"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    MarginLeft="12"
+                    MarginLeft="10"
                     MarginBottom="10"
                     Sprite="General\CharacterCreation\name_input_area">
                     <Children>
@@ -64,10 +63,11 @@
                             HeightSizePolicy="StretchToParent"
                             MarginLeft="8"
                             MarginRight="8"
-                            MarginTop="8"
-                            MarginBottom="8"
+                            MarginTop="6"
+                            MarginBottom="6"
                             Brush="Review.NameInput.Text"
                             RealText="@TavernInputText"
+                            Command.Click="ExecuteTavernInputFocus"
                             KeyboardInfoText="@TavernPanelTitle" />
                     </Children>
                 </Widget>
@@ -75,12 +75,12 @@
                 <ButtonWidget
                     WidthSizePolicy="Fixed"
                     HeightSizePolicy="Fixed"
-                    SuggestedWidth="88"
-                    SuggestedHeight="32"
+                    SuggestedWidth="90"
+                    SuggestedHeight="36"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    MarginLeft="320"
-                    MarginBottom="19"
+                    MarginLeft="466"
+                    MarginBottom="13"
                     Brush="MapBar.Left.Button"
                     Command.Click="ExecuteTavernSendFromInput">
                     <Children>
@@ -94,58 +94,25 @@
                     </Children>
                 </ButtonWidget>
 
-                <ButtonWidget
-                    WidthSizePolicy="Fixed"
-                    HeightSizePolicy="Fixed"
-                    SuggestedWidth="88"
-                    SuggestedHeight="32"
+                <TextWidget
+                    WidthSizePolicy="CoverChildren"
+                    HeightSizePolicy="CoverChildren"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    MarginLeft="412"
-                    MarginBottom="19"
-                    Brush="MapBar.Left.Button"
-                    Command.Click="ExecuteTavernRefresh">
-                    <Children>
-                        <TextWidget
-                            WidthSizePolicy="StretchToParent"
-                            HeightSizePolicy="StretchToParent"
-                            Brush="MapTextBrushGal"
-                            Brush.TextHorizontalAlignment="Center"
-                            Brush.TextVerticalAlignment="Center"
-                            Text="@TavernRefreshText" />
-                    </Children>
-                </ButtonWidget>
-
-                <ButtonWidget
-                    WidthSizePolicy="Fixed"
-                    HeightSizePolicy="Fixed"
-                    SuggestedWidth="88"
-                    SuggestedHeight="26"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    MarginRight="10"
-                    MarginTop="8"
-                    Brush="MapBar.Left.Button"
-                    Command.Click="ExecuteTavernClose">
-                    <Children>
-                        <TextWidget
-                            WidthSizePolicy="StretchToParent"
-                            HeightSizePolicy="StretchToParent"
-                            Brush="MapTextBrushGal"
-                            Brush.TextHorizontalAlignment="Center"
-                            Brush.TextVerticalAlignment="Center"
-                            Text="@TavernCloseText" />
-                    </Children>
-                </ButtonWidget>
+                    MarginLeft="468"
+                    MarginBottom="52"
+                    Brush="MapTextBrushGal"
+                    Brush.FontSize="12"
+                    Text="@TavernEnterHintText" />
 
                 <TextWidget
                     WidthSizePolicy="StretchToParent"
                     HeightSizePolicy="CoverChildren"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    MarginLeft="12"
-                    MarginRight="12"
-                    MarginBottom="2"
+                    MarginLeft="10"
+                    MarginRight="10"
+                    MarginBottom="0"
                     Brush="ChatLog.Text"
                     Brush.TextHorizontalAlignment="Left"
                     Text="@TavernStatusText"
