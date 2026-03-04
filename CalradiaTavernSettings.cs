@@ -33,5 +33,27 @@ namespace CalradiaTavern
             HintText = "可输入中文或英文，聊天时显示该用户名。留空则使用游戏角色名。"
         )]
         public string UserName { get; set; } = string.Empty;
+
+        [SettingPropertyGroup("Chat", GroupOrder = 2)]
+        [SettingPropertyInteger(
+            "Chat Cooldown Seconds",
+            0,
+            60,
+            Order = 0,
+            RequireRestart = false,
+            HintText = "发送聊天消息后的冷却秒数。默认 10 秒。设置 0 可关闭冷却。"
+        )]
+        public int ChatCooldownSeconds { get; set; } = 10;
+
+        // [SettingPropertyGroup("Trade", GroupOrder = 2)]
+        // [SettingPropertyInteger(
+        //     "Min Item Value",
+        //     0,
+        //     500000,
+        //     Order = 0,
+        //     RequireRestart = false,
+        //     HintText = "交易界面只显示单价大于等于该值的可交易物品。默认 5000。"
+        // )]
+        // public int DirectTradeMinItemValue { get; set; } = 5000;
     }
 }

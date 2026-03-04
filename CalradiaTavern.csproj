@@ -116,8 +116,8 @@
     <Copy SourceFiles="$(TargetDir)SubModule.xml" DestinationFolder="$(ModuleInstallDir)" SkipUnchangedFiles="true" />
 
     <ItemGroup>
-      <UiXml Include="$(TargetDir)GUI\Prefabs\**\*.xml" />
-      <UiPatchXml Include="$(TargetDir)GUI\PrefabExtensions\**\*.xml" />
+      <UiXml Include="$(ProjectDir)GUI\Prefabs\**\*.xml" />
+      <UiPatchXml Include="$(ProjectDir)GUI\PrefabExtensions\**\*.xml" />
     </ItemGroup>
     <Copy
       SourceFiles="@(UiXml)"

@@ -4,14 +4,18 @@ namespace CalradiaTavern.UI.ViewModels
 {
     internal sealed class TavernChatLineVM : ViewModel
     {
+        private readonly string _messageId;
         private string _lineText;
         private bool _isSelf;
 
-        public TavernChatLineVM(string lineText, bool isSelf)
+        public TavernChatLineVM(string messageId, string lineText, bool isSelf)
         {
+            _messageId = messageId ?? string.Empty;
             _lineText = lineText ?? string.Empty;
             _isSelf = isSelf;
         }
+
+        public string MessageId => _messageId;
 
         [DataSourceProperty]
         public string LineText

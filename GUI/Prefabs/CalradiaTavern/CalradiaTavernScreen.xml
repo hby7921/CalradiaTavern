@@ -9,159 +9,477 @@
                 Color="#000000FF"
                 AlphaFactor="0.45" />
 
-        <Widget WidthSizePolicy="Fixed"
+        <Widget WidthSizePolicy="StretchToParent"
                 HeightSizePolicy="Fixed"
-                SuggestedWidth="1120"
-                SuggestedHeight="700"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Sprite="BlankWhiteSquare_9"
-                Color="#101114FF"
-                AlphaFactor="0.96">
+                SuggestedHeight="196"
+                VerticalAlignment="Top"
+                Sprite="SPKingdom\kingdom_top_header">
           <Children>
-            <ListPanel WidthSizePolicy="StretchToParent"
-                       HeightSizePolicy="StretchToParent"
-                       MarginLeft="16"
-                       MarginRight="16"
-                       MarginTop="14"
-                       MarginBottom="14"
-                       StackLayout.LayoutMethod="VerticalTopToBottom">
+            <Widget WidthSizePolicy="Fixed"
+                    HeightSizePolicy="Fixed"
+                    SuggestedWidth="887"
+                    SuggestedHeight="150"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Sprite="StdAssets\tabbar_long">
               <Children>
-                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="44">
+                <TextWidget WidthSizePolicy="CoverChildren"
+                            HeightSizePolicy="CoverChildren"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            MarginTop="14"
+                            Brush="Kingdom.NameTitle.Text"
+                            Text="@TitleText" />
+              </Children>
+            </Widget>
+
+            <ListPanel WidthSizePolicy="CoverChildren"
+                       HeightSizePolicy="CoverChildren"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       MarginBottom="34"
+                       StackLayout.LayoutMethod="HorizontalLeftToRight">
+              <Children>
+                <ButtonWidget DoNotPassEventsToChildren="true"
+                              WidthSizePolicy="Fixed"
+                              HeightSizePolicy="Fixed"
+                              SuggestedWidth="180"
+                              SuggestedHeight="48"
+                              Brush="Kingdom.Name.Edit.Button"
+                              Command.Click="ExecuteSetTab"
+                              CommandParameter.Click="0"
+                              IsSelected="@IsChatTab"
+                              UpdateChildrenStates="true">
                   <Children>
                     <TextWidget WidthSizePolicy="StretchToParent"
                                 HeightSizePolicy="StretchToParent"
-                                Brush="Clan.Title.Text"
-                                Text="@TitleText" />
-                    <ButtonWidget WidthSizePolicy="Fixed"
-                                  HeightSizePolicy="Fixed"
-                                  SuggestedWidth="110"
-                                  SuggestedHeight="34"
-                                  Brush="Header.Tab.Center"
-                                  Command.Click="ExecuteClose">
-                      <Children>
-                        <TextWidget WidthSizePolicy="StretchToParent"
-                                    HeightSizePolicy="StretchToParent"
-                                    Brush="Clan.TabControl.Text"
-                                    Text="@CloseButtonText" />
-                      </Children>
-                    </ButtonWidget>
+                                Brush="Clan.TabControl.Text"
+                                Text="@ChatTabText" />
                   </Children>
-                </ListPanel>
+                </ButtonWidget>
 
+                <ButtonWidget DoNotPassEventsToChildren="true"
+                              WidthSizePolicy="Fixed"
+                              HeightSizePolicy="Fixed"
+                              SuggestedWidth="180"
+                              SuggestedHeight="48"
+                              MarginLeft="8"
+                              Brush="Kingdom.Name.Edit.Button"
+                              Command.Click="ExecuteSetTab"
+                              CommandParameter.Click="1"
+                              IsSelected="@IsMarketTab"
+                              UpdateChildrenStates="true">
+                  <Children>
+                    <TextWidget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                Brush="Clan.TabControl.Text"
+                                Text="@MarketTabText" />
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </ListPanel>
+
+            <ButtonWidget DoNotPassEventsToChildren="true"
+                          WidthSizePolicy="Fixed"
+                          HeightSizePolicy="Fixed"
+                          SuggestedWidth="60"
+                          SuggestedHeight="60"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Top"
+                          MarginRight="26"
+                          MarginTop="20"
+                          Brush="Popup.CloseButton"
+                          Command.Click="ExecuteClose" />
+          </Children>
+        </Widget>
+
+        <Widget WidthSizePolicy="StretchToParent"
+                HeightSizePolicy="StretchToParent"
+                MarginTop="188"
+                MarginBottom="60">
+          <Children>
+            <Widget WidthSizePolicy="StretchToParent"
+                    HeightSizePolicy="StretchToParent"
+                    MarginLeft="56"
+                    MarginRight="56"
+                    MarginTop="10"
+                    MarginBottom="10"
+                    Sprite="StdAssets\Popup\canvas">
+              <Children>
                 <Widget WidthSizePolicy="StretchToParent"
-                        HeightSizePolicy="Fixed"
-                        SuggestedHeight="2"
-                        MarginTop="6"
-                        MarginBottom="8"
-                        Sprite="BlankWhiteSquare_9"
-                        Color="#7A5A2BFF" />
+                        HeightSizePolicy="StretchToParent"
+                        Sprite="StdAssets\Popup\canvas_gradient"
+                        IsEnabled="false" />
+                <BrushWidget WidthSizePolicy="StretchToParent"
+                             HeightSizePolicy="StretchToParent"
+                             Brush="Popup.Frame"
+                             IsEnabled="false" />
 
                 <ListPanel WidthSizePolicy="StretchToParent"
-                           HeightSizePolicy="StretchToParent">
+                           HeightSizePolicy="StretchToParent"
+                           MarginLeft="20"
+                           MarginRight="20"
+                           MarginTop="18"
+                           MarginBottom="18"
+                           StackLayout.LayoutMethod="HorizontalLeftToRight">
                   <Children>
                     <Widget WidthSizePolicy="Fixed"
                             HeightSizePolicy="StretchToParent"
-                            SuggestedWidth="280"
-                            Sprite="BlankWhiteSquare_9"
-                            Color="#1A1C20FF"
-                            MarginRight="10">
+                            SuggestedWidth="330"
+                            Sprite="StdAssets\Popup\canvas">
                       <Children>
-                        <ListPanel WidthSizePolicy="StretchToParent"
-                                   HeightSizePolicy="StretchToParent"
-                                   MarginLeft="8"
-                                   MarginRight="8"
-                                   MarginTop="8"
-                                   MarginBottom="8"
-                                   StackLayout.LayoutMethod="VerticalTopToBottom">
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                Sprite="StdAssets\Popup\canvas_gradient"
+                                IsEnabled="false" />
+                        <BrushWidget WidthSizePolicy="StretchToParent"
+                                     HeightSizePolicy="StretchToParent"
+                                     Brush="Popup.Frame"
+                                     IsEnabled="false" />
+
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedHeight="34"
+                                    MarginTop="12"
+                                    MarginLeft="12"
+                                    MarginRight="12"
+                                    Brush="Popup.Title.Text"
+                                    IsVisible="@IsChatTab"
+                                    Text="@OnlinePlayersTitleText" />
+
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                MarginLeft="12"
+                                MarginRight="30"
+                                MarginTop="52"
+                                MarginBottom="64"
+                                Sprite="BlankWhiteSquare_9"
+                                Color="#0C1117FF"
+                                IsVisible="@IsChatTab"
+                                AlphaFactor="0.92">
                           <Children>
-                            <TextWidget WidthSizePolicy="StretchToParent"
-                                        HeightSizePolicy="Fixed"
-                                        SuggestedHeight="28"
-                                        Brush="Clan.Text.Body"
-                                        Brush.FontColor="#E7D6B5FF"
-                                        Text="@OnlinePlayersTitleText" />
-
-                            <Widget WidthSizePolicy="StretchToParent"
-                                    HeightSizePolicy="StretchToParent"
-                                    Sprite="BlankWhiteSquare_9"
-                                    Color="#0E1013FF">
+                            <ScrollablePanel Id="PlayersScrollPanel"
+                                             WidthSizePolicy="StretchToParent"
+                                             HeightSizePolicy="StretchToParent"
+                                             MarginLeft="6"
+                                             MarginRight="6"
+                                             MarginTop="6"
+                                             MarginBottom="6"
+                                             AutoHideScrollBars="false"
+                                             MouseScrollAxis="Vertical"
+                                             ClipRect="PlayersClip"
+                                             InnerPanel="PlayersClip/PlayersList"
+                                             VerticalScrollbar="OnlinePlayersScrollbar">
                               <Children>
-                                <ScrollablePanel WidthSizePolicy="StretchToParent"
-                                                 HeightSizePolicy="StretchToParent"
-                                                 MarginLeft="6"
-                                                 MarginRight="6"
-                                                 MarginTop="6"
-                                                 MarginBottom="6"
-                                                 AutoHideScrollBars="true"
-                                                 ClipRect="PlayersClip"
-                                                 InnerPanel="PlayersClip/PlayersList">
+                                <Widget Id="PlayersClip"
+                                        WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="StretchToParent"
+                                        ClipToBounds="true">
                                   <Children>
-                                    <Widget Id="PlayersClip"
-                                            WidthSizePolicy="StretchToParent"
-                                            HeightSizePolicy="StretchToParent"
-                                            ClipToBounds="true">
-                                      <Children>
-                                        <ListPanel Id="PlayersList"
-                                                   WidthSizePolicy="StretchToParent"
-                                                   HeightSizePolicy="CoverChildren"
-                                                   DataSource="{OnlinePlayers}"
-                                                   StackLayout.LayoutMethod="VerticalTopToBottom">
-                                          <ItemTemplate>
+                                    <ListPanel Id="PlayersList"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="CoverChildren"
+                                               DataSource="{OnlinePlayers}"
+                                               StackLayout.LayoutMethod="VerticalTopToBottom">
+                                      <ItemTemplate>
+                                        <ListPanel WidthSizePolicy="StretchToParent"
+                                                   HeightSizePolicy="Fixed"
+                                                   SuggestedHeight="28"
+                                                   MarginBottom="2"
+                                                   StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                          <Children>
                                             <TextWidget WidthSizePolicy="StretchToParent"
-                                                        HeightSizePolicy="CoverChildren"
-                                                        MarginBottom="3"
-                                                        Brush="Clan.Text.Body"
+                                                        HeightSizePolicy="StretchToParent"
+                                                        Brush="Popup.Content.Text"
                                                         Brush.FontColor="#DDE4EDFF"
+                                                        Brush.TextHorizontalAlignment="Left"
                                                         Text="@NameText" />
-                                          </ItemTemplate>
+                                            <ButtonWidget WidthSizePolicy="Fixed"
+                                                          HeightSizePolicy="StretchToParent"
+                                                          SuggestedWidth="62"
+                                                          DoNotPassEventsToChildren="true"
+                                                          Brush="Kingdom.Name.Edit.Button"
+                                                          IsEnabled="@IsBlockEnabled"
+                                                          Command.Click="ExecuteBlock">
+                                              <Children>
+                                                <TextWidget WidthSizePolicy="StretchToParent"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            Brush="Clan.TabControl.Text"
+                                                            Text="@BlockButtonText" />
+                                              </Children>
+                                            </ButtonWidget>
+                                          </Children>
                                         </ListPanel>
-                                      </Children>
-                                    </Widget>
+                                      </ItemTemplate>
+                                    </ListPanel>
                                   </Children>
-                                </ScrollablePanel>
+                                </Widget>
                               </Children>
-                            </Widget>
-
-                            <Widget WidthSizePolicy="StretchToParent"
-                                    HeightSizePolicy="Fixed"
-                                    SuggestedHeight="2"
-                                    MarginTop="8"
-                                    MarginBottom="8"
+                            </ScrollablePanel>
+                          </Children>
+                        </Widget>
+                        <ScrollbarWidget Id="OnlinePlayersScrollbar"
+                                         WidthSizePolicy="Fixed"
+                                         HeightSizePolicy="StretchToParent"
+                                         SuggestedWidth="8"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         MarginTop="56"
+                                         MarginBottom="68"
+                                         IsVisible="false"
+                                         AlignmentAxis="Vertical"
+                                         Handle="OnlinePlayersScrollbarHandle"
+                                         MaxValue="100"
+                                         MinValue="0">
+                          <Children>
+                            <Widget WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="StretchToParent"
+                                    SuggestedWidth="4"
+                                    HorizontalAlignment="Center"
                                     Sprite="BlankWhiteSquare_9"
-                                    Color="#3B3F47FF" />
+                                    Color="#5A4033FF"
+                                    AlphaFactor="0.20" />
+                            <ImageWidget Id="OnlinePlayersScrollbarHandle"
+                                         WidthSizePolicy="Fixed"
+                                         HeightSizePolicy="Fixed"
+                                         SuggestedWidth="8"
+                                         SuggestedHeight="24"
+                                         HorizontalAlignment="Center"
+                                         Brush="FaceGen.Scrollbar.Handle" />
+                          </Children>
+                        </ScrollbarWidget>
 
-                            <TextWidget WidthSizePolicy="StretchToParent"
-                                        HeightSizePolicy="Fixed"
-                                        SuggestedHeight="22"
-                                        Brush="Clan.Text.Body"
-                                        Text="Name" />
-                            <Widget WidthSizePolicy="StretchToParent"
-                                    HeightSizePolicy="Fixed"
-                                    SuggestedHeight="40"
-                                    Sprite="General\CharacterCreation\name_input_area">
-                              <Children>
-                                <EditableTextWidget WidthSizePolicy="StretchToParent"
-                                                    HeightSizePolicy="StretchToParent"
-                                                    MarginLeft="10"
-                                                    MarginRight="10"
-                                                    MarginTop="8"
-                                                    MarginBottom="8"
-                                                    Brush="Review.NameInput.Text"
-                                                    RealText="@NameInputText" />
-                              </Children>
-                            </Widget>
-                            <ButtonWidget WidthSizePolicy="StretchToParent"
-                                          HeightSizePolicy="Fixed"
-                                          SuggestedHeight="34"
-                                          MarginTop="6"
-                                          Brush="Header.Tab.Center"
-                                          Command.Click="ExecuteApplyName">
+                        <ListPanel WidthSizePolicy="StretchToParent"
+                                   HeightSizePolicy="Fixed"
+                                   SuggestedHeight="38"
+                                   VerticalAlignment="Bottom"
+                                   MarginBottom="16"
+                                   MarginLeft="12"
+                                   MarginRight="12"
+                                   IsVisible="@IsChatTab"
+                                   StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <ButtonWidget DoNotPassEventsToChildren="true"
+                                          WidthSizePolicy="StretchToParent"
+                                          HeightSizePolicy="StretchToParent"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          Command.Click="ExecuteRefreshAll">
                               <Children>
                                 <TextWidget WidthSizePolicy="StretchToParent"
                                             HeightSizePolicy="StretchToParent"
                                             Brush="Clan.TabControl.Text"
-                                            Text="@ApplyNameButtonText" />
+                                            Text="@RefreshButtonText" />
+                              </Children>
+                            </ButtonWidget>
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="36"
+                                          MarginLeft="6"
+                                          DoNotPassEventsToChildren="true"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          IsEnabled="@CanPrevOnlinePlayersPage"
+                                          Command.Click="ExecutePrevOnlinePlayersPage">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@PrevPageText" />
+                              </Children>
+                            </ButtonWidget>
+                            <TextWidget WidthSizePolicy="Fixed"
+                                        HeightSizePolicy="StretchToParent"
+                                        SuggestedWidth="78"
+                                        Brush="Popup.Content.Text"
+                                        Brush.TextHorizontalAlignment="Center"
+                                        Text="@OnlinePlayersPageText" />
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="36"
+                                          MarginLeft="2"
+                                          DoNotPassEventsToChildren="true"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          IsEnabled="@CanNextOnlinePlayersPage"
+                                          Command.Click="ExecuteNextOnlinePlayersPage">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@NextPageText" />
+                              </Children>
+                            </ButtonWidget>
+                          </Children>
+                        </ListPanel>
+
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedHeight="28"
+                                    MarginTop="10"
+                                    MarginLeft="12"
+                                    MarginRight="12"
+                                    IsVisible="@IsMarketTab"
+                                    Brush="Popup.Title.Text"
+                                    Text="@MyListingsLimitText" />
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedHeight="24"
+                                    MarginTop="36"
+                                    MarginLeft="12"
+                                    MarginRight="12"
+                                    IsVisible="false"
+                                    Brush="Popup.Content.Text"
+                                    Brush.FontColor="#D8C17CFF"
+                                    Text="@MarketRulesText" />
+
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                MarginLeft="12"
+                                MarginRight="30"
+                                MarginTop="62"
+                                MarginBottom="78"
+                                IsVisible="@IsMarketTab"
+                                Sprite="BlankWhiteSquare_9"
+                                Color="#0C1117FF"
+                                AlphaFactor="0.92">
+                          <Children>
+                            <ScrollablePanel Id="TradePlayersScrollPanel"
+                                             WidthSizePolicy="StretchToParent"
+                                             HeightSizePolicy="StretchToParent"
+                                             MarginLeft="6"
+                                             MarginRight="6"
+                                             MarginTop="6"
+                                             MarginBottom="6"
+                                             AutoHideScrollBars="false"
+                                             MouseScrollAxis="Vertical"
+                                             ClipRect="LeftMyMarketClip"
+                                             InnerPanel="LeftMyMarketClip/LeftMyMarketList"
+                                              VerticalScrollbar="LeftMyMarketScrollbar">
+                              <Children>
+                                <Widget Id="LeftMyMarketClip"
+                                        WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="StretchToParent"
+                                        ClipToBounds="true">
+                                  <Children>
+                                    <ListPanel Id="LeftMyMarketList"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="CoverChildren"
+                                               DataSource="{MyMarketListings}"
+                                               StackLayout.LayoutMethod="VerticalTopToBottom">
+                                      <ItemTemplate>
+                                        <ButtonWidget WidthSizePolicy="StretchToParent"
+                                                      DoNotPassEventsToChildren="true"
+                                                      HeightSizePolicy="Fixed"
+                                                      SuggestedHeight="28"
+                                                      MarginBottom="2"
+                                                      IsEnabled="true"
+                                                      Brush="Kingdom.Name.Edit.Button"
+                                                      Command.Click="ExecutePrimaryAction">
+                                          <Children>
+                                            <ListPanel WidthSizePolicy="StretchToParent"
+                                                       HeightSizePolicy="StretchToParent"
+                                                       MarginLeft="6"
+                                                       MarginRight="6"
+                                                       StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                              <Children>
+                                                <TextWidget WidthSizePolicy="StretchToParent"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            Brush="Clan.TabControl.Text"
+                                                            Brush.TextHorizontalAlignment="Left"
+                                                            Text="@ItemText" />
+                                                <TextWidget WidthSizePolicy="Fixed"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            SuggestedWidth="66"
+                                                            Brush="Clan.TabControl.Text"
+                                                            Brush.TextHorizontalAlignment="Center"
+                                                            Text="@ActionText" />
+                                              </Children>
+                                            </ListPanel>
+                                          </Children>
+                                        </ButtonWidget>
+                                      </ItemTemplate>
+                                    </ListPanel>
+                                  </Children>
+                                </Widget>
+                              </Children>
+                            </ScrollablePanel>
+                          </Children>
+                        </Widget>
+                        <ScrollbarWidget Id="LeftMyMarketScrollbar"
+                                         WidthSizePolicy="Fixed"
+                                         HeightSizePolicy="StretchToParent"
+                                         SuggestedWidth="8"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         MarginTop="84"
+                                         MarginBottom="78"
+                                         IsVisible="false"
+                                         AlignmentAxis="Vertical"
+                                         Handle="LeftMyMarketScrollbarHandle"
+                                         MaxValue="100"
+                                         MinValue="0">
+                          <Children>
+                            <Widget WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="StretchToParent"
+                                    SuggestedWidth="4"
+                                    HorizontalAlignment="Center"
+                                    Sprite="BlankWhiteSquare_9"
+                                    Color="#5A4033FF"
+                                    AlphaFactor="0.20" />
+                            <ImageWidget Id="LeftMyMarketScrollbarHandle"
+                                         WidthSizePolicy="Fixed"
+                                         HeightSizePolicy="Fixed"
+                                         SuggestedWidth="8"
+                                         SuggestedHeight="24"
+                                         HorizontalAlignment="Center"
+                                         Brush="FaceGen.Scrollbar.Handle" />
+                          </Children>
+                        </ScrollbarWidget>
+
+                        <ListPanel WidthSizePolicy="StretchToParent"
+                                   HeightSizePolicy="Fixed"
+                                   SuggestedHeight="40"
+                                   VerticalAlignment="Bottom"
+                                   MarginBottom="16"
+                                   MarginLeft="12"
+                                   MarginRight="12"
+                                   IsVisible="@IsMarketTab"
+                                   StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <Widget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="StretchToParent" />
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="36"
+                                          DoNotPassEventsToChildren="true"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          IsEnabled="@CanPrevTradePlayersPage"
+                                          Command.Click="ExecutePrevTradePlayersPage">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@PrevPageText" />
+                              </Children>
+                            </ButtonWidget>
+                            <TextWidget WidthSizePolicy="Fixed"
+                                        HeightSizePolicy="StretchToParent"
+                                        SuggestedWidth="78"
+                                        MarginLeft="2"
+                                        Brush="Popup.Content.Text"
+                                        Brush.TextHorizontalAlignment="Center"
+                                        Text="@TradePlayersPageText" />
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="36"
+                                          MarginLeft="2"
+                                          DoNotPassEventsToChildren="true"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          IsEnabled="@CanNextTradePlayersPage"
+                                          Command.Click="ExecuteNextTradePlayersPage">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@NextPageText" />
                               </Children>
                             </ButtonWidget>
                           </Children>
@@ -171,47 +489,64 @@
 
                     <Widget WidthSizePolicy="StretchToParent"
                             HeightSizePolicy="StretchToParent"
-                            Sprite="BlankWhiteSquare_9"
-                            Color="#17191DFF">
+                            MarginLeft="12"
+                            Sprite="StdAssets\Popup\canvas">
                       <Children>
-                        <ListPanel WidthSizePolicy="StretchToParent"
-                                   HeightSizePolicy="StretchToParent"
-                                   MarginLeft="10"
-                                   MarginRight="10"
-                                   MarginTop="8"
-                                   MarginBottom="8"
-                                   StackLayout.LayoutMethod="VerticalTopToBottom">
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                Sprite="StdAssets\Popup\canvas_gradient"
+                                IsEnabled="false" />
+                        <BrushWidget WidthSizePolicy="StretchToParent"
+                                     HeightSizePolicy="StretchToParent"
+                                     Brush="Popup.Frame"
+                                     IsEnabled="false" />
+
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                IsVisible="@IsChatTab">
                           <Children>
                             <TextWidget WidthSizePolicy="StretchToParent"
                                         HeightSizePolicy="Fixed"
-                                        SuggestedHeight="28"
-                                        Brush="Clan.Text.Body"
-                                        Brush.FontColor="#E7D6B5FF"
+                                        SuggestedHeight="34"
+                                        MarginTop="12"
+                                        MarginLeft="12"
+                                        MarginRight="12"
+                                        Brush="Popup.Title.Text"
                                         Text="@ChatAreaTitleText" />
 
                             <Widget WidthSizePolicy="StretchToParent"
                                     HeightSizePolicy="StretchToParent"
+                                    MarginLeft="12"
+                                    MarginRight="30"
+                                    MarginTop="52"
+                                    MarginBottom="74"
                                     Sprite="BlankWhiteSquare_9"
-                                    Color="#0C0F13FF">
+                                    Color="#0B1016FF"
+                                    AlphaFactor="0.94">
                               <Children>
-                                <ScrollablePanel WidthSizePolicy="StretchToParent"
+                                <ScrollablePanel Id="ChatScrollPanel"
+                                                 WidthSizePolicy="StretchToParent"
                                                  HeightSizePolicy="StretchToParent"
-                                                 MarginLeft="6"
-                                                 MarginRight="6"
-                                                 MarginTop="6"
-                                                 MarginBottom="6"
-                                                 AutoHideScrollBars="true"
-                                                 ClipRect="ChatClip"
-                                                 InnerPanel="ChatClip/ChatList">
+                                                 MarginLeft="8"
+                                                 MarginRight="8"
+                                                 MarginTop="8"
+                                                 MarginBottom="8"
+                                                  AutoHideScrollBars="false"
+                                                  MouseScrollAxis="Vertical"
+                                                  ClipRect="ChatClip"
+                                                  InnerPanel="ChatClip/ChatList"
+                                                  VerticalScrollbar="ChatScrollbar">
                                   <Children>
                                     <Widget Id="ChatClip"
                                             WidthSizePolicy="StretchToParent"
                                             HeightSizePolicy="StretchToParent"
+                                            VerticalAlignment="Bottom"
                                             ClipToBounds="true">
                                       <Children>
                                         <ListPanel Id="ChatList"
                                                    WidthSizePolicy="StretchToParent"
                                                    HeightSizePolicy="CoverChildren"
+                                                   VerticalAlignment="Bottom"
                                                    DataSource="{ChatLines}"
                                                    StackLayout.LayoutMethod="VerticalTopToBottom">
                                           <ItemTemplate>
@@ -221,14 +556,14 @@
                                               <Children>
                                                 <TextWidget WidthSizePolicy="StretchToParent"
                                                             HeightSizePolicy="CoverChildren"
-                                                            Brush="Clan.Text.Body"
+                                                            Brush="Popup.Content.Text"
                                                             Brush.TextHorizontalAlignment="Left"
                                                             Brush.FontColor="#7EDC95FF"
                                                             IsVisible="@IsSelf"
                                                             Text="@LineText" />
                                                 <TextWidget WidthSizePolicy="StretchToParent"
                                                             HeightSizePolicy="CoverChildren"
-                                                            Brush="Clan.Text.Body"
+                                                            Brush="Popup.Content.Text"
                                                             Brush.TextHorizontalAlignment="Left"
                                                             Brush.FontColor="#E9DCC4FF"
                                                             IsHidden="@IsSelf"
@@ -243,75 +578,851 @@
                                 </ScrollablePanel>
                               </Children>
                             </Widget>
+                            <ScrollbarWidget Id="ChatScrollbar"
+                                             WidthSizePolicy="Fixed"
+                                             HeightSizePolicy="StretchToParent"
+                                             SuggestedWidth="8"
+                                             HorizontalAlignment="Right"
+                                             VerticalAlignment="Center"
+                                             MarginTop="56"
+                                             MarginBottom="74"
+                                             AlignmentAxis="Vertical"
+                                             Handle="ChatScrollbarHandle"
+                                             MaxValue="100"
+                                             MinValue="0">
+                              <Children>
+                                <Widget WidthSizePolicy="Fixed"
+                                        HeightSizePolicy="StretchToParent"
+                                        SuggestedWidth="4"
+                                        HorizontalAlignment="Center"
+                                        Sprite="BlankWhiteSquare_9"
+                                        Color="#5A4033FF"
+                                        AlphaFactor="0.20" />
+                                <ImageWidget Id="ChatScrollbarHandle"
+                                             WidthSizePolicy="Fixed"
+                                             HeightSizePolicy="Fixed"
+                                             SuggestedWidth="8"
+                                             SuggestedHeight="24"
+                                             HorizontalAlignment="Center"
+                                             Brush="FaceGen.Scrollbar.Handle" />
+                              </Children>
+                            </ScrollbarWidget>
 
-                            <ListPanel WidthSizePolicy="StretchToParent"
-                                       HeightSizePolicy="Fixed"
-                                       SuggestedHeight="52"
-                                       MarginTop="8">
+                            <Widget WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedWidth="300"
+                                    SuggestedHeight="56"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    MarginBottom="10"
+                                    MarginRight="12"
+                                    Sprite="StdAssets\Popup\canvas">
                               <Children>
                                 <Widget WidthSizePolicy="StretchToParent"
                                         HeightSizePolicy="StretchToParent"
-                                        Sprite="General\CharacterCreation\name_input_area"
-                                        MarginRight="8">
+                                        Sprite="StdAssets\Popup\canvas_gradient"
+                                        IsEnabled="false" />
+                                <Widget WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="StretchToParent"
+                                        MarginLeft="8"
+                                        MarginRight="8"
+                                        MarginTop="8"
+                                        MarginBottom="8">
                                   <Children>
-                                    <EditableTextWidget WidthSizePolicy="StretchToParent"
-                                                        HeightSizePolicy="StretchToParent"
-                                                        MarginLeft="10"
-                                                        MarginRight="10"
-                                                        MarginTop="8"
-                                                        MarginBottom="8"
-                                                        Brush="Review.NameInput.Text"
-                                                        RealText="@ChatInputText"
-                                                        KeyboardInfoText="@ChatAreaTitleText" />
+                                    <ButtonWidget DoNotPassEventsToChildren="true"
+                                                  WidthSizePolicy="Fixed"
+                                                  HeightSizePolicy="StretchToParent"
+                                                  SuggestedWidth="126"
+                                                  HorizontalAlignment="Right"
+                                                  MarginRight="136"
+                                                  Brush="Kingdom.Name.Edit.Button"
+                                                  Command.Click="ExecuteSendChat">
+                                      <Children>
+                                        <TextWidget WidthSizePolicy="StretchToParent"
+                                                    HeightSizePolicy="StretchToParent"
+                                                    Brush="Clan.TabControl.Text"
+                                                    Text="@SendChatButtonText" />
+                                      </Children>
+                                    </ButtonWidget>
+                                    <ButtonWidget DoNotPassEventsToChildren="true"
+                                                  WidthSizePolicy="Fixed"
+                                                  HeightSizePolicy="StretchToParent"
+                                                  SuggestedWidth="126"
+                                                  MarginLeft="6"
+                                                  HorizontalAlignment="Right"
+                                                  Brush="Kingdom.Name.Edit.Button"
+                                                  Command.Click="ExecuteRefreshAll">
+                                      <Children>
+                                        <TextWidget WidthSizePolicy="StretchToParent"
+                                                    HeightSizePolicy="StretchToParent"
+                                                    Brush="Clan.TabControl.Text"
+                                                    Text="@RefreshButtonText" />
+                                      </Children>
+                                    </ButtonWidget>
                                   </Children>
                                 </Widget>
-                                <ButtonWidget WidthSizePolicy="Fixed"
-                                              HeightSizePolicy="StretchToParent"
-                                              SuggestedWidth="120"
-                                              Brush="Header.Tab.Center"
-                                              MarginRight="8"
-                                              Command.Click="ExecuteSendChat">
-                                  <Children>
-                                    <TextWidget WidthSizePolicy="StretchToParent"
-                                                HeightSizePolicy="StretchToParent"
-                                                Brush="Clan.TabControl.Text"
-                                                Text="@SendChatButtonText" />
-                                  </Children>
-                                </ButtonWidget>
-                                <ButtonWidget WidthSizePolicy="Fixed"
-                                              HeightSizePolicy="StretchToParent"
-                                              SuggestedWidth="120"
-                                              Brush="Header.Tab.Center"
-                                              Command.Click="ExecuteRefreshAll">
-                                  <Children>
-                                    <TextWidget WidthSizePolicy="StretchToParent"
-                                                HeightSizePolicy="StretchToParent"
-                                                Brush="Clan.TabControl.Text"
-                                                Text="Refresh" />
-                                  </Children>
-                                </ButtonWidget>
                               </Children>
-                            </ListPanel>
+                            </Widget>
+                          </Children>
+                        </Widget>
 
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                IsVisible="@IsMarketTab">
+                          <Children>
                             <TextWidget WidthSizePolicy="StretchToParent"
                                         HeightSizePolicy="Fixed"
-                                        SuggestedHeight="28"
-                                        MarginTop="4"
-                                        Brush="Clan.Text.Body"
-                                        Brush.FontColor="#D8C17CFF"
-                                        Text="@StatusText"
-                                        AutoHideIfEmpty="true" />
+                                        SuggestedHeight="34"
+                                        MarginTop="12"
+                                        MarginLeft="12"
+                                        MarginRight="12"
+                                        Brush="Popup.Title.Text"
+                                        Text="@MarketSectionTitleText" />
+
+                            <ListPanel WidthSizePolicy="StretchToParent"
+                                       HeightSizePolicy="StretchToParent"
+                                       MarginLeft="12"
+                                       MarginRight="12"
+                                       MarginTop="52"
+                                       MarginBottom="68"
+                                       StackLayout.LayoutMethod="VerticalTopToBottom">
+                              <Children>
+                                <ListPanel WidthSizePolicy="StretchToParent"
+                                           HeightSizePolicy="Fixed"
+                                           SuggestedHeight="112"
+                                           StackLayout.LayoutMethod="VerticalTopToBottom">
+                                  <Children>
+                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="Fixed"
+                                                SuggestedHeight="26"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketSearchCurrentText" />
+                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="Fixed"
+                                                SuggestedHeight="24"
+                                                MarginTop="2"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketResultSummaryText" />
+                                    <ListPanel WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="Fixed"
+                                               SuggestedHeight="36"
+                                               MarginTop="6"
+                                               StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                      <Children>
+                                        <ButtonWidget WidthSizePolicy="Fixed"
+                                                      HeightSizePolicy="StretchToParent"
+                                                      SuggestedWidth="112"
+                                                      DoNotPassEventsToChildren="true"
+                                                      Brush="Kingdom.Name.Edit.Button"
+                                                      Command.Click="ExecuteOpenMarketSearchPopup">
+                                          <Children>
+                                            <TextWidget WidthSizePolicy="StretchToParent"
+                                                        HeightSizePolicy="StretchToParent"
+                                                        Brush="Clan.TabControl.Text"
+                                                        Text="@SearchButtonText" />
+                                          </Children>
+                                        </ButtonWidget>
+                                        <ButtonWidget WidthSizePolicy="Fixed"
+                                                      HeightSizePolicy="StretchToParent"
+                                                      SuggestedWidth="96"
+                                                      MarginLeft="4"
+                                                      DoNotPassEventsToChildren="true"
+                                                      Brush="Kingdom.Name.Edit.Button"
+                                                      Command.Click="ExecuteClearMarketSearch">
+                                          <Children>
+                                            <TextWidget WidthSizePolicy="StretchToParent"
+                                                        HeightSizePolicy="StretchToParent"
+                                                        Brush="Clan.TabControl.Text"
+                                                        Text="@ClearButtonText" />
+                                          </Children>
+                                        </ButtonWidget>
+                                        <Widget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="StretchToParent" />
+                                        <ButtonWidget WidthSizePolicy="Fixed"
+                                                      HeightSizePolicy="StretchToParent"
+                                                      SuggestedWidth="36"
+                                                      MarginLeft="8"
+                                                      DoNotPassEventsToChildren="true"
+                                                      Brush="Kingdom.Name.Edit.Button"
+                                                      IsEnabled="@CanPrevMarketPage"
+                                                      Command.Click="ExecutePrevMarketPage">
+                                          <Children>
+                                            <TextWidget WidthSizePolicy="StretchToParent"
+                                                        HeightSizePolicy="StretchToParent"
+                                                        Brush="Clan.TabControl.Text"
+                                                        Text="@PrevPageText" />
+                                          </Children>
+                                        </ButtonWidget>
+                                        <TextWidget WidthSizePolicy="Fixed"
+                                                    HeightSizePolicy="StretchToParent"
+                                                    SuggestedWidth="80"
+                                                    Brush="Popup.Content.Text"
+                                                    Brush.TextHorizontalAlignment="Center"
+                                                    Text="@MarketPageText" />
+                                        <ButtonWidget WidthSizePolicy="Fixed"
+                                                      HeightSizePolicy="StretchToParent"
+                                                      SuggestedWidth="36"
+                                                      MarginLeft="2"
+                                                      DoNotPassEventsToChildren="true"
+                                                      Brush="Kingdom.Name.Edit.Button"
+                                                      IsEnabled="@CanNextMarketPage"
+                                                      Command.Click="ExecuteNextMarketPage">
+                                          <Children>
+                                            <TextWidget WidthSizePolicy="StretchToParent"
+                                                        HeightSizePolicy="StretchToParent"
+                                                        Brush="Clan.TabControl.Text"
+                                                        Text="@NextPageText" />
+                                          </Children>
+                                        </ButtonWidget>
+                                      </Children>
+                                    </ListPanel>
+                                  </Children>
+                                </ListPanel>
+                                <ListPanel WidthSizePolicy="StretchToParent"
+                                           HeightSizePolicy="Fixed"
+                                           SuggestedHeight="24"
+                                           MarginTop="6"
+                                           StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                  <Children>
+                                    <TextWidget WidthSizePolicy="Fixed"
+                                                HeightSizePolicy="StretchToParent"
+                                                SuggestedWidth="420"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketColNameText" />
+                                    <TextWidget WidthSizePolicy="Fixed"
+                                                HeightSizePolicy="StretchToParent"
+                                                SuggestedWidth="70"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketColTypeText" />
+                                    <TextWidget WidthSizePolicy="Fixed"
+                                                HeightSizePolicy="StretchToParent"
+                                                SuggestedWidth="160"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketColListedAtText" />
+                                    <TextWidget WidthSizePolicy="Fixed"
+                                                HeightSizePolicy="StretchToParent"
+                                                SuggestedWidth="120"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketColPriceText" />
+                                    <TextWidget WidthSizePolicy="Fixed"
+                                                HeightSizePolicy="StretchToParent"
+                                                SuggestedWidth="90"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketColActionText" />
+                                    <TextWidget WidthSizePolicy="Fixed"
+                                                HeightSizePolicy="StretchToParent"
+                                                SuggestedWidth="80"
+                                                Brush="Popup.Content.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MarketColOpText" />
+                                  </Children>
+                                </ListPanel>
+
+                                <Widget WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="StretchToParent"
+                                        MarginTop="8"
+                                        MarginBottom="8"
+                                        Sprite="BlankWhiteSquare_9"
+                                        Color="#0B1016FF"
+                                        AlphaFactor="0.94">
+                                  <Children>
+                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="Fixed"
+                                                SuggestedHeight="24"
+                                                MarginLeft="8"
+                                                MarginRight="8"
+                                                MarginTop="6"
+                                                Brush="Popup.Title.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                IsVisible="false"
+                                                Text="@MarketListingsTitleText" />
+
+                                    <Widget Id="MarketClip"
+                                            WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            MarginLeft="8"
+                                            MarginRight="8"
+                                            MarginTop="6"
+                                            MarginBottom="6"
+                                            ClipToBounds="true">
+                                      <Children>
+                                        <ListPanel Id="MarketList"
+                                                   WidthSizePolicy="StretchToParent"
+                                                   HeightSizePolicy="CoverChildren"
+                                                   DataSource="{MarketListings}"
+                                                   StackLayout.LayoutMethod="VerticalTopToBottom">
+                                          <ItemTemplate>
+                                            <ListPanel WidthSizePolicy="StretchToParent"
+                                                       HeightSizePolicy="Fixed"
+                                                       SuggestedHeight="22"
+                                                       MarginBottom="0"
+                                                       StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                              <Children>
+                                                <TextWidget WidthSizePolicy="Fixed"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            SuggestedWidth="420"
+                                                            Brush="Popup.Content.Text"
+                                                            Brush.FontSize="35"
+                                                            Text="@ItemText" />
+                                                <TextWidget WidthSizePolicy="Fixed"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            SuggestedWidth="70"
+                                                            Brush="Popup.Content.Text"
+                                                            Brush.FontSize="35"
+                                                            Brush.TextHorizontalAlignment="Center"
+                                                            Text="@CategoryText" />
+                                                <TextWidget WidthSizePolicy="Fixed"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            SuggestedWidth="160"
+                                                            Brush="Popup.Content.Text"
+                                                            Brush.FontSize="35"
+                                                            Text="@TimeText" />
+                                                <TextWidget WidthSizePolicy="Fixed"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            SuggestedWidth="120"
+                                                            Brush="Popup.Content.Text"
+                                                            Brush.FontSize="35"
+                                                            Brush.TextHorizontalAlignment="Center"
+                                                            Text="@SellerText" />
+                                                <TextWidget WidthSizePolicy="Fixed"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            SuggestedWidth="90"
+                                                            Brush="Popup.Content.Text"
+                                                            Brush.FontSize="35"
+                                                            Brush.TextHorizontalAlignment="Center"
+                                                            Text="@PriceText" />
+                                                <ButtonWidget WidthSizePolicy="Fixed"
+                                                              HeightSizePolicy="StretchToParent"
+                                                              SuggestedWidth="80"
+                                                              DoNotPassEventsToChildren="true"
+                                                              Brush="Kingdom.Name.Edit.Button"
+                                                              IsEnabled="@IsActionEnabled"
+                                                              Command.Click="ExecutePrimaryAction">
+                                                  <Children>
+                                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                                HeightSizePolicy="StretchToParent"
+                                                                Brush="Clan.TabControl.Text"
+                                                                Brush.FontSize="35"
+                                                                Text="@ActionText" />
+                                                  </Children>
+                                                </ButtonWidget>
+                                              </Children>
+                                            </ListPanel>
+                                          </ItemTemplate>
+                                        </ListPanel>
+                                      </Children>
+                                    </Widget>
+                                  </Children>
+                                </Widget>
+
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="Fixed"
+                                            SuggestedHeight="24"
+                                            MarginTop="2"
+                                            Brush="Popup.Content.Text"
+                                            Brush.FontColor="#E3D58EFF"
+                                            Text="@StatusText"
+                                            AutoHideIfEmpty="true" />
+
+                                <Widget WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed"
+                                        SuggestedHeight="110"
+                                        IsVisible="false"
+                                        VerticalAlignment="Bottom"
+                                        Sprite="BlankWhiteSquare_9"
+                                        Color="#121722FF">
+                                  <Children>
+                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="Fixed"
+                                                SuggestedHeight="24"
+                                                MarginLeft="8"
+                                                MarginRight="8"
+                                                MarginTop="4"
+                                                Brush="Popup.Title.Text"
+                                                Brush.FontColor="#D8C17CFF"
+                                                Text="@MyListingsTitleText" />
+
+                                    <ScrollablePanel WidthSizePolicy="StretchToParent"
+                                                     HeightSizePolicy="StretchToParent"
+                                                     MarginLeft="8"
+                                                     MarginRight="20"
+                                                     MarginTop="24"
+                                                     MarginBottom="6"
+                                                     AutoHideScrollBars="false"
+                                                     MouseScrollAxis="Vertical"
+                                                     ClipRect="MyMarketClip"
+                                                     InnerPanel="MyMarketClip/MyMarketList"
+                                                     VerticalScrollbar="MyMarketScrollbar">
+                                      <Children>
+                                        <Widget Id="MyMarketClip"
+                                                WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="StretchToParent"
+                                                ClipToBounds="true">
+                                          <Children>
+                                            <ListPanel Id="MyMarketList"
+                                                       WidthSizePolicy="StretchToParent"
+                                                       HeightSizePolicy="CoverChildren"
+                                                       DataSource="{MyMarketListings}"
+                                                       StackLayout.LayoutMethod="VerticalTopToBottom">
+                                              <ItemTemplate>
+                                                <ListPanel WidthSizePolicy="StretchToParent"
+                                                           HeightSizePolicy="CoverChildren"
+                                                           MarginBottom="2"
+                                                           StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                                  <Children>
+                                                    <TextWidget WidthSizePolicy="StretchToParent"
+                                                                HeightSizePolicy="CoverChildren"
+                                                                Brush="Popup.Content.Text"
+                                                                Text="@ItemText" />
+                                                    <ButtonWidget WidthSizePolicy="Fixed"
+                                                                  HeightSizePolicy="Fixed"
+                                                                  SuggestedWidth="82"
+                                                                  SuggestedHeight="22"
+                                                                  Brush="Kingdom.Name.Edit.Button"
+                                                                  IsEnabled="@IsActionEnabled"
+                                                                  Command.Click="ExecutePrimaryAction">
+                                                      <Children>
+                                                        <TextWidget WidthSizePolicy="StretchToParent"
+                                                                    HeightSizePolicy="StretchToParent"
+                                                                    Brush="Clan.TabControl.Text"
+                                                                    Text="@ActionText" />
+                                                      </Children>
+                                                    </ButtonWidget>
+                                                  </Children>
+                                                </ListPanel>
+                                              </ItemTemplate>
+                                            </ListPanel>
+                                          </Children>
+                                        </Widget>
+                                      </Children>
+                                    </ScrollablePanel>
+                                  </Children>
+                                </Widget>
+
+                                <ScrollbarWidget Id="MyMarketScrollbar"
+                                                 WidthSizePolicy="Fixed"
+                                                 HeightSizePolicy="StretchToParent"
+                                                 SuggestedWidth="8"
+                                                 IsVisible="false"
+                                                 HorizontalAlignment="Right"
+                                                 VerticalAlignment="Bottom"
+                                                 MarginBottom="6"
+                                                 MarginTop="8"
+                                                 AlignmentAxis="Vertical"
+                                                 Handle="MyMarketScrollbarHandle"
+                                                 MaxValue="100"
+                                                 MinValue="0">
+                                  <Children>
+                                    <Widget WidthSizePolicy="Fixed"
+                                            HeightSizePolicy="StretchToParent"
+                                            SuggestedWidth="4"
+                                            HorizontalAlignment="Center"
+                                            Sprite="BlankWhiteSquare_9"
+                                            Color="#5A4033FF"
+                                            AlphaFactor="0.20" />
+                                    <ImageWidget Id="MyMarketScrollbarHandle"
+                                                 WidthSizePolicy="Fixed"
+                                                 HeightSizePolicy="Fixed"
+                                                 SuggestedWidth="8"
+                                                 SuggestedHeight="24"
+                                                 HorizontalAlignment="Center"
+                                                 Brush="FaceGen.Scrollbar.Handle" />
+                                  </Children>
+                                </ScrollbarWidget>
+                              </Children>
+                            </ListPanel>
+                          </Children>
+                        </Widget>
+                      </Children>
+                    </Widget>
+                  </Children>
+                </ListPanel>
+
+                <Widget WidthSizePolicy="StretchToParent"
+                        HeightSizePolicy="StretchToParent"
+                        IsEnabled="@IsPublishSelectorPopupVisible"
+                        IsVisible="@IsPublishSelectorPopupVisible">
+                  <Children>
+                    <Widget WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            Sprite="BlankWhiteSquare_9"
+                            Color="#000000FF"
+                            AlphaFactor="0.60" />
+                    <Widget WidthSizePolicy="Fixed"
+                            HeightSizePolicy="Fixed"
+                            SuggestedWidth="760"
+                            SuggestedHeight="520"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Sprite="StdAssets\Popup\canvas">
+                      <Children>
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                Sprite="StdAssets\Popup\canvas_gradient"
+                                IsEnabled="false" />
+                        <BrushWidget WidthSizePolicy="StretchToParent"
+                                     HeightSizePolicy="StretchToParent"
+                                     Brush="Popup.Frame"
+                                     IsEnabled="false" />
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedHeight="34"
+                                    MarginTop="12"
+                                    MarginLeft="12"
+                                    MarginRight="12"
+                                    Brush="Popup.Title.Text"
+                                    Text="@PublishSelectorTitleText" />
+
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="Fixed"
+                                SuggestedHeight="36"
+                                MarginTop="54"
+                                MarginLeft="12"
+                                MarginRight="12"
+                                Sprite="General\CharacterCreation\name_input_area">
+                          <Children>
+                            <EditableTextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="StretchToParent"
+                                                MarginLeft="10"
+                                                MarginRight="10"
+                                                MarginTop="8"
+                                                MarginBottom="8"
+                                                IsFocusable="true"
+                                                Brush="Review.NameInput.Text"
+                                                RealText="@PublishSearchText"
+                                                KeyboardInfoText="@PublishSelectorSearchHintText" />
+                          </Children>
+                        </Widget>
+
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                MarginTop="96"
+                                MarginBottom="56"
+                                MarginLeft="12"
+                                MarginRight="28"
+                                Sprite="BlankWhiteSquare_9"
+                                Color="#0B1016FF">
+                          <Children>
+                            <ScrollablePanel WidthSizePolicy="StretchToParent"
+                                             HeightSizePolicy="StretchToParent"
+                                             MarginLeft="8"
+                                             MarginRight="8"
+                                             MarginTop="8"
+                                             MarginBottom="8"
+                                             AutoHideScrollBars="false"
+                                             MouseScrollAxis="Vertical"
+                                             ClipRect="PublishSelectorClip"
+                                             InnerPanel="PublishSelectorClip/PublishSelectorList"
+                                             VerticalScrollbar="PublishSelectorScrollbar">
+                              <Children>
+                                <Widget Id="PublishSelectorClip"
+                                        WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="StretchToParent"
+                                        ClipToBounds="true">
+                                  <Children>
+                                    <ListPanel Id="PublishSelectorList"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="CoverChildren"
+                                               DataSource="{PublishableItems}"
+                                               StackLayout.LayoutMethod="VerticalTopToBottom">
+                                      <ItemTemplate>
+                                        <ListPanel WidthSizePolicy="StretchToParent"
+                                                   HeightSizePolicy="CoverChildren"
+                                                   MarginBottom="2"
+                                                   StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                          <Children>
+                                            <TextWidget WidthSizePolicy="StretchToParent"
+                                                        HeightSizePolicy="CoverChildren"
+                                                        Brush="Popup.Content.Text"
+                                                        Text="@LineText" />
+                                            <ButtonWidget WidthSizePolicy="Fixed"
+                                                          HeightSizePolicy="Fixed"
+                                                          SuggestedWidth="68"
+                                                          SuggestedHeight="22"
+                                                          Brush="Kingdom.Name.Edit.Button"
+                                                          Command.Click="ExecuteSelect">
+                                              <Children>
+                                                <TextWidget WidthSizePolicy="StretchToParent"
+                                                            HeightSizePolicy="StretchToParent"
+                                                            Brush="Clan.TabControl.Text"
+                                                            Text="@ConfirmButtonText" />
+                                              </Children>
+                                            </ButtonWidget>
+                                          </Children>
+                                        </ListPanel>
+                                      </ItemTemplate>
+                                    </ListPanel>
+                                  </Children>
+                                </Widget>
+                              </Children>
+                            </ScrollablePanel>
+                          </Children>
+                        </Widget>
+                        <ScrollbarWidget Id="PublishSelectorScrollbar"
+                                         WidthSizePolicy="Fixed"
+                                         HeightSizePolicy="StretchToParent"
+                                         SuggestedWidth="8"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         MarginTop="142"
+                                         MarginBottom="60"
+                                         AlignmentAxis="Vertical"
+                                         Handle="PublishSelectorScrollbarHandle"
+                                         MaxValue="100"
+                                         MinValue="0">
+                          <Children>
+                            <Widget WidthSizePolicy="Fixed"
+                                    HeightSizePolicy="StretchToParent"
+                                    SuggestedWidth="4"
+                                    HorizontalAlignment="Center"
+                                    Sprite="BlankWhiteSquare_9"
+                                    Color="#5A4033FF"
+                                    AlphaFactor="0.20" />
+                            <ImageWidget Id="PublishSelectorScrollbarHandle"
+                                         WidthSizePolicy="Fixed"
+                                         HeightSizePolicy="Fixed"
+                                         SuggestedWidth="8"
+                                         SuggestedHeight="24"
+                                         HorizontalAlignment="Center"
+                                         Brush="FaceGen.Scrollbar.Handle" />
+                          </Children>
+                        </ScrollbarWidget>
+                        <ButtonWidget WidthSizePolicy="Fixed"
+                                      HeightSizePolicy="Fixed"
+                                      SuggestedWidth="110"
+                                      SuggestedHeight="36"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Bottom"
+                                      MarginRight="12"
+                                      MarginBottom="12"
+                                      Brush="Kingdom.Name.Edit.Button"
+                                      Command.Click="ExecuteClosePublishPopup">
+                          <Children>
+                            <TextWidget WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="StretchToParent"
+                                        Brush="Clan.TabControl.Text"
+                                        Text="@CancelButtonText" />
+                          </Children>
+                        </ButtonWidget>
+                      </Children>
+                    </Widget>
+                  </Children>
+                </Widget>
+
+                <Widget WidthSizePolicy="StretchToParent"
+                        HeightSizePolicy="StretchToParent"
+                        IsEnabled="@IsPublishPricePopupVisible"
+                        IsVisible="@IsPublishPricePopupVisible">
+                  <Children>
+                    <Widget WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            Sprite="BlankWhiteSquare_9"
+                            Color="#000000FF"
+                            IsEnabled="false"
+                            AlphaFactor="0.60" />
+                    <Widget WidthSizePolicy="Fixed"
+                            HeightSizePolicy="Fixed"
+                            SuggestedWidth="620"
+                            SuggestedHeight="260"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Sprite="StdAssets\Popup\canvas">
+                      <Children>
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                Sprite="StdAssets\Popup\canvas_gradient"
+                                IsEnabled="false" />
+                        <BrushWidget WidthSizePolicy="StretchToParent"
+                                     HeightSizePolicy="StretchToParent"
+                                     Brush="Popup.Frame"
+                                     IsEnabled="false" />
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedHeight="34"
+                                    MarginTop="12"
+                                    MarginLeft="12"
+                                    MarginRight="12"
+                                    Brush="Popup.Title.Text"
+                                    Text="@PublishPriceTitleText" />
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedHeight="26"
+                                    MarginTop="58"
+                                    MarginLeft="12"
+                                    MarginRight="12"
+                                    Brush="Popup.Content.Text"
+                                    Brush.FontColor="#D8C17CFF"
+                                    Text="@PublishSelectedItemText" />
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="Fixed"
+                                SuggestedHeight="36"
+                                MarginTop="94"
+                                MarginLeft="12"
+                                MarginRight="12"
+                                Sprite="General\CharacterCreation\name_input_area">
+                          <Children>
+                            <EditableTextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="StretchToParent"
+                                                MarginLeft="10"
+                                                MarginRight="10"
+                                                MarginTop="8"
+                                                MarginBottom="8"
+                                                IsFocusable="true"
+                                                Brush="Review.NameInput.Text"
+                                                RealText="@PublishPriceText"
+                                                KeyboardInfoText="@PublishPriceHintText" />
+                          </Children>
+                        </Widget>
+                        <ListPanel WidthSizePolicy="CoverChildren"
+                                   HeightSizePolicy="Fixed"
+                                   SuggestedHeight="36"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   MarginRight="12"
+                                   MarginBottom="12"
+                                   StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="110"
+                                          DoNotPassEventsToChildren="true"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          Command.Click="ExecuteConfirmPublishPrice">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@ConfirmButtonText" />
+                              </Children>
+                            </ButtonWidget>
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="110"
+                                          MarginLeft="6"
+                                          DoNotPassEventsToChildren="true"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          Command.Click="ExecuteCancelPublishPrice">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@CancelButtonText" />
+                              </Children>
+                            </ButtonWidget>
                           </Children>
                         </ListPanel>
                       </Children>
                     </Widget>
                   </Children>
-                </ListPanel>
+                </Widget>
+
+                <Widget WidthSizePolicy="StretchToParent"
+                        HeightSizePolicy="StretchToParent"
+                        IsEnabled="false"
+                        IsVisible="false">
+                  <Children>
+                    <Widget WidthSizePolicy="StretchToParent"
+                            HeightSizePolicy="StretchToParent"
+                            Sprite="BlankWhiteSquare_9"
+                            Color="#000000FF"
+                            AlphaFactor="0.60" />
+                    <Widget WidthSizePolicy="Fixed"
+                            HeightSizePolicy="Fixed"
+                            SuggestedWidth="620"
+                            SuggestedHeight="220"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Sprite="StdAssets\Popup\canvas">
+                      <Children>
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent"
+                                Sprite="StdAssets\Popup\canvas_gradient"
+                                IsEnabled="false" />
+                        <BrushWidget WidthSizePolicy="StretchToParent"
+                                     HeightSizePolicy="StretchToParent"
+                                     Brush="Popup.Frame"
+                                     IsEnabled="false" />
+                        <TextWidget WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="Fixed"
+                                    SuggestedHeight="34"
+                                    MarginTop="12"
+                                    MarginLeft="12"
+                                    MarginRight="12"
+                                    Brush="Popup.Title.Text"
+                                    Text="@MarketSearchTitleText" />
+                        <Widget WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="Fixed"
+                                SuggestedHeight="36"
+                                MarginTop="58"
+                                MarginLeft="12"
+                                MarginRight="12"
+                                Sprite="General\CharacterCreation\name_input_area">
+                          <Children>
+                            <EditableTextWidget WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="StretchToParent"
+                                                MarginLeft="10"
+                                                MarginRight="10"
+                                                MarginTop="8"
+                                                MarginBottom="8"
+                                                IsFocusable="true"
+                                                Brush="Review.NameInput.Text"
+                                                RealText="@MarketSearchPopupText"
+                                                KeyboardInfoText="@MarketSearchHintText" />
+                          </Children>
+                        </Widget>
+                        <ListPanel WidthSizePolicy="CoverChildren"
+                                   HeightSizePolicy="Fixed"
+                                   SuggestedHeight="36"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   MarginRight="12"
+                                   MarginBottom="12"
+                                   StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="110"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          Command.Click="ExecuteApplyMarketSearchPopup">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@ConfirmButtonText" />
+                              </Children>
+                            </ButtonWidget>
+                            <ButtonWidget WidthSizePolicy="Fixed"
+                                          HeightSizePolicy="StretchToParent"
+                                          SuggestedWidth="110"
+                                          MarginLeft="6"
+                                          Brush="Kingdom.Name.Edit.Button"
+                                          Command.Click="ExecuteCloseMarketSearchPopup">
+                              <Children>
+                                <TextWidget WidthSizePolicy="StretchToParent"
+                                            HeightSizePolicy="StretchToParent"
+                                            Brush="Clan.TabControl.Text"
+                                            Text="@CancelButtonText" />
+                              </Children>
+                            </ButtonWidget>
+                          </Children>
+                        </ListPanel>
+                      </Children>
+                    </Widget>
+                  </Children>
+                </Widget>
               </Children>
-            </ListPanel>
+            </Widget>
           </Children>
         </Widget>
       </Children>
     </Widget>
   </Window>
 </Prefab>
+

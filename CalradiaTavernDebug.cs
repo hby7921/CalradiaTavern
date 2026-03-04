@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using TaleWorlds.Library;
@@ -9,10 +10,10 @@ namespace CalradiaTavern
     {
         private static readonly object Sync = new object();
         private static string _logPath;
-        private static string _desktopLogPath;
         private static bool _initialized;
 
         public static string BuildTag => "DBG-2026-03-01-01:00";
+        public static long NowMs => (long)(Stopwatch.GetTimestamp() * 1000.0 / Stopwatch.Frequency);
 
         public static void Initialize()
         {
@@ -22,9 +23,8 @@ namespace CalradiaTavern
             }
 
             _logPath = ResolveLogPath();
-            _desktopLogPath = ResolveDesktopLogPath();
             _initialized = true;
-            Trace("Debug", "Initialized. LogPath=" + _logPath + " DesktopLogPath=" + _desktopLogPath);
+            Trace("Debug", "Initialized. LogPath=" + _logPath);
         }
 
         public static void Trace(string source, string message)
@@ -40,11 +40,6 @@ namespace CalradiaTavern
                 lock (Sync)
                 {
                     AppendLineSafe(_logPath, line);
-                    if (!string.IsNullOrEmpty(_desktopLogPath) &&
-                        !string.Equals(_desktopLogPath, _logPath, StringComparison.OrdinalIgnoreCase))
-                    {
-                        AppendLineSafe(_desktopLogPath, line);
-                    }
                 }
             }
             catch
@@ -93,6 +88,11 @@ namespace CalradiaTavern
                 string moduleDir = Path.GetFullPath(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Modules", "CalradiaTavern")
                 );
+                string binDir = Path.Combine(moduleDir, "bin", "Win64_Shipping_Client");
+                if (Directory.Exists(binDir))
+                {
+                    return Path.Combine(binDir, "CalradiaTavern.debug.log");
+                }
 
                 if (Directory.Exists(moduleDir))
                 {
@@ -103,36 +103,7 @@ namespace CalradiaTavern
             {
             }
 
-            try
-            {
-                string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                if (!string.IsNullOrEmpty(desktop) && Directory.Exists(desktop))
-                {
-                    return Path.Combine(desktop, "CalradiaTavern.debug.log");
-                }
-            }
-            catch
-            {
-            }
-
             return Path.Combine(Path.GetTempPath(), "CalradiaTavern.debug.log");
-        }
-
-        private static string ResolveDesktopLogPath()
-        {
-            try
-            {
-                string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                if (!string.IsNullOrEmpty(desktop) && Directory.Exists(desktop))
-                {
-                    return Path.Combine(desktop, "CalradiaTavern.debug.log");
-                }
-            }
-            catch
-            {
-            }
-
-            return string.Empty;
         }
 
         private static void AppendLineSafe(string path, string line)

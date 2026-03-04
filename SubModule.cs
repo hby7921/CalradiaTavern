@@ -11,11 +11,13 @@ namespace CalradiaTavern
 {
     public class SubModule : MBSubModuleBase
     {
-        private const string BuildMarker = "CTavern build 2026-03-01 22:35 ui-stable-shell";
+        private const string BuildMarker = "CTavern build 2026-03-02 13:20 f8-persistent-cn-clean";
         private const float BackgroundPollIntervalSeconds = 1.5f;
 
         private float _backgroundPollElapsed;
         private bool _chatInputOpen;
+        private bool _quickChatReopenRequested;
+        private string _quickChatReopenDefaultText = string.Empty;
 
         protected override void OnSubModuleLoad()
         {
@@ -77,6 +79,14 @@ namespace CalradiaTavern
                 }
             }
 
+            if (_quickChatReopenRequested && !_chatInputOpen)
+            {
+                string reopenText = _quickChatReopenDefaultText ?? string.Empty;
+                _quickChatReopenRequested = false;
+                _quickChatReopenDefaultText = string.Empty;
+                OpenQuickChatInput(reopenText);
+            }
+
             if (!Input.IsKeyReleased(InputKey.F8))
             {
                 return;
@@ -85,7 +95,7 @@ namespace CalradiaTavern
             try
             {
                 CalradiaTavernDebug.Trace("SubModule", "F8 pressed");
-                OpenQuickChatInput();
+                OpenQuickChatInput(string.Empty);
             }
             catch (Exception ex)
             {
@@ -93,7 +103,7 @@ namespace CalradiaTavern
             }
         }
 
-        private void OpenQuickChatInput()
+        private void OpenQuickChatInput(string defaultInputText)
         {
             if (_chatInputOpen)
             {
@@ -104,33 +114,35 @@ namespace CalradiaTavern
             if (behavior == null)
             {
                 InformationManager.DisplayMessage(
-                    new InformationMessage("[Calradia Tavern] Campaign behavior not ready.", Colors.Red)
+                    new InformationMessage("[卡拉迪亚酒馆] 战役行为尚未就绪。", Colors.Red)
                 );
                 return;
             }
 
             _chatInputOpen = true;
-
             try
             {
                 InformationManager.ShowTextInquiry(
                     new TextInquiryData(
-                        "Global Chat",
-                        "Type your message. Sent messages and incoming messages appear in the bottom-left feed.",
+                        "全服聊天",
+                        "输入消息后点击发送，窗口会继续保留；点击关闭退出。",
                         true,
                         true,
-                        "Send",
-                        "Cancel",
+                        "发送",
+                        "关闭",
                         input =>
                         {
+                            string reopenText = string.Empty;
                             try
                             {
-                                string text = (input ?? string.Empty).Trim();
+                                string rawText = input ?? string.Empty;
+                                string text = rawText.Trim();
                                 if (text.Length == 0)
                                 {
                                     InformationManager.DisplayMessage(
-                                        new InformationMessage("[Global Chat] Message cannot be empty.", Colors.Red)
+                                        new InformationMessage("[全服聊天] 消息不能为空。", Colors.Red)
                                     );
+                                    reopenText = rawText;
                                     return;
                                 }
 
@@ -138,54 +150,57 @@ namespace CalradiaTavern
                                 if (result.StartsWith("Send failed:", StringComparison.OrdinalIgnoreCase))
                                 {
                                     InformationManager.DisplayMessage(
-                                        new InformationMessage("[Global Chat] " + result, Colors.Red)
+                                        new InformationMessage("[全服聊天] " + result, Colors.Red)
                                     );
+                                    reopenText = rawText;
                                     return;
                                 }
 
-                                string sender = string.IsNullOrWhiteSpace(behavior.DisplayName)
-                                    ? "Me"
-                                    : behavior.DisplayName;
-                                InformationManager.DisplayMessage(
-                                    new InformationMessage(
-                                        CalradiaTavernCampaignBehavior.FormatChatToast(
-                                            sender,
-                                            text,
-                                            DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                                        ),
-                                        Colors.Cyan
-                                    )
-                                );
-
                                 behavior.PullNow();
+                                reopenText = string.Empty;
                             }
                             catch (Exception ex)
                             {
                                 CalradiaTavernDebug.ReportException("SubModule.QuickChat.Send", ex);
                                 InformationManager.DisplayMessage(
-                                    new InformationMessage("[Global Chat] Send exception: " + ex.Message, Colors.Red)
+                                    new InformationMessage("[全服聊天] 发送异常: " + ex.Message, Colors.Red)
                                 );
+                                reopenText = input ?? string.Empty;
                             }
                             finally
                             {
                                 _chatInputOpen = false;
+                                RequestQuickChatReopen(reopenText);
                             }
                         },
-                        () => _chatInputOpen = false,
+                        () =>
+                        {
+                            _quickChatReopenRequested = false;
+                            _quickChatReopenDefaultText = string.Empty;
+                            _chatInputOpen = false;
+                        },
                         false,
                         null,
                         string.Empty,
-                        string.Empty
+                        defaultInputText ?? string.Empty
                     ),
-                    false,
-                    false
+                    true,
+                    true
                 );
             }
             catch (Exception ex)
             {
                 _chatInputOpen = false;
+                _quickChatReopenRequested = false;
+                _quickChatReopenDefaultText = string.Empty;
                 CalradiaTavernDebug.ReportException("SubModule.QuickChat.Open", ex);
             }
+        }
+
+        private void RequestQuickChatReopen(string defaultInputText)
+        {
+            _quickChatReopenRequested = true;
+            _quickChatReopenDefaultText = defaultInputText ?? string.Empty;
         }
 
         private static bool IsMapScreenActive()

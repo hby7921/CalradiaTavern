@@ -58,7 +58,6 @@ namespace CalradiaTavern.Patches
                         : behavior.DisplayName.Trim();
 
                     AddMessageMethod?.Invoke(__instance, new[] { text, sender, __0, null });
-
                     InformationManager.DisplayMessage(
                         new InformationMessage("[Chat] " + sender + ": " + text, Colors.Cyan)
                     );
